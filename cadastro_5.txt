@@ -1,0 +1,3 @@
+nome,maria
+idade,40
+sexo,f

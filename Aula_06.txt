@@ -1,0 +1,163 @@
+Programação Orientada a Objeto
+
+1. Paradigmas de programação
+
+Ao longo do curso, sempre pensamos nossos programas como sequências de comandos. Uma instrução abaixo da outra, na ordem
+em que devem ser executadas. Quando muito agrupávamos algumas instruções dentro de uma função e fazíamos desvios de fluxo
+para essas funções. Dentro de cada uma delas, porém, havia a mesma estrutura sequencial de instruções. Chamamos esse modelo
+de programação imperativa ou programação procedural.
+
+Porém, essa não é a única forma de organizar um programa. Temos diversas outras formas de pensar em um programa. Chamamos
+essas formas de paradigmas de programação. Uma linguagem de programação pode suportar exclusivamente um paradigma ou vários
+paradigmas. A linguagem C, por exemplo, é usada apenas para programação procedural. Já o Python pode ser usado para programação
+procedural, orientada a objeto, funcional, entre outros.
+
+Vejamos alguns exemplos:
+
+    Programação procedural/imperativa: foco em instruções que modificam o estado do programa e modularização em funções.
+    Programação orientada a objeto: foco na modelagem das entidades envolvidas em um problema (objetos) e na interação entre elas.
+    Programação funcional: foco na declaração e avaliação de funções, que são definidas como árvores de expressões que
+                            sempre retornam valores, ao invés de blocos de instruções.
+    Programação orientada a evento: foco na resposta a ação dos usuários (por exemplo, um clique do mouse provoca uma
+                                    reação do programa).
+
+Estudaremos um pouco sobre o paradigma orientado a objeto.
+
+2. Programação Orientada a Objeto
+
+O grande objetivo da programação orientada a objeto é a reutilização de código. Os programas devem ser modularizados, de
+modo que diferentes pessoas possam implementar módulos diferentes e juntá-los ao final. A integração entre os módulos deve
+ser relativamente simples, e se possível um módulo deve poder ser reaproveitado em outros sistemas.
+
+Isso é feito através da modelagem das entidades que compõem um problema ou interagirão com o sistema. Utilizamos a ideia
+de classes e objetos para representar as informações que cada entidade possui e os comportamentos que elas apresentam.
+
+2.1. Classes
+
+Uma classe é um modelo genérico para criarmos entidades (objetos). Na classe nós especificamos as informações e os
+comportamentos que os objetos terão. Todos os objetos pertencentes a uma mesma classe terão características em comum.
+
+2.2. Objetos
+
+Podemos dizer que as classes são ideias abstratas, enquanto objetos são instâncias concretas da classe. Por exemplo,
+podemos dizer que "Pessoa" é uma classe. Quando pensamos em "Pessoa", já imaginamos uma figura com cabeça, olhos, nariz,
+boca, tronco, mãos e pés que normalmente anda sobre 2 pernas e se comunica com a voz. Você, leitor, e eu, escritor, somos
+objetos da classe "Pessoa". Somos reais, existimos, temos diversas características em comum, mas cada um de nós tem suas
+particularidades, como diferenças de altura, forma, cor, voz etc.
+
+2.3. Métodos
+
+Para modelar o comportamento dos nossos objetos, podemos criar funções dentro da classe. Elas são funções como qualquer
+outra, mas tipicamente terão pelo menos um parâmetro: uma referência para o objeto que está realizando a ação. Essas
+funções também não podem ser executadas arbitrariamente, mas deverão ser chamadas necessariamente pelos objetos. Essas
+"funções do objeto" são chamadas de métodos.
+
+2.4. Atributos
+
+Para armazenar os dados dos nossos objetos, podemos criar variáveis internas nos objetos. Essas variáveis são particulares
+de cada objeto, ou seja, diferentes objetos de uma mesma classe normalmente terão as mesmas variáveis, mas o valor delas
+não necessariamente será igual. Chamamos essas "variáveis do objeto" de atributos.
+
+    Quatro princípios básicos nos ajudam a fazer uma boa modelagem:
+
+        Encapsulamento: cada classe deve conter todas as informações necessárias para seu funcionamento bem como todos os
+                        métodos necessários para alterar essas informações. Idealmente, apenas objetos da própria classe
+                        poderão alterar seus atributos, e objetos de outras classes irão interagir com eles através de métodos.
+        Abstração: as classes devem apresentar interfaces simples para o uso por outros desenvolvedores e para a interação
+                    com outras classes. Todos os detalhes complicados de seu funcionamento devem estar "escondidos" dentro
+                    de métodos simples de usar, com parâmetros e retornos bem definidos. Um exemplo disso é um smartphone:
+                    por dentro ele possui circuitos extremamente complexos e softwares avançadíssimos, mas para o usuário
+                    ele apresenta uma interface simples com poucos botões e vários ícones intuitivos na tela.
+        Herança: se várias classes terão atributos e métodos em comum, não devemos ter que redigitá-los várias vezes. Ao
+                    invés disso, criamos uma classe com esses atributos comuns e as outras classes irão herdá-los.
+        Polimorfismo: objetos de diferentes classes herdeiras de uma mesma classe mãe podem ser tratados genericamente
+                        como objetos pertencentes à classe mãe.
+
+Classes e objetos em Python
+
+No capítulo anterior introduzimos conceitos de programação orientada a objeto. Esses conceitos são gerais e podem ser
+aplicados a qualquer linguagem orientada a objeto. Vejamos como implementar essas funcionalidades em Python.
+
+1. Classes
+
+1.1. Criando uma classe
+
+Para definir uma classe em Python utilizamos a palavra class seguida de um nome para a classe.
+
+Normalmente nossas classes terão um método especial conhecido como método construtor. Ele sempre será chamado de __init__
+em Python. Sempre que criamos um objeto novo o Python automaticamente executa o método construtor. Apesar de não ser
+obrigatório, é uma boa prática criar os atributos e atribuir um valor inicial para eles no construtor. Como todos os
+objetos executam o construtor ao serem criados, é um jeito de garantir que todos eles terão os mesmos atributos.
+
+Como comentamos anteriormente, os métodos devem receber uma referência para o objeto que o chamou. Essa é uma forma do
+método ter acesso aos atributos do objeto. O primeiro parâmetro de um método sempre será interpretado como sendo essa
+referência, e convenciona-se chamá-lo de self.
+
+Vejamos um exemplo de uma classe que representa jogadores para um jogo de dados. Cada jogador terá 2 atributos:
+um nome (que será fornecido na construção do objeto) e uma pontuação (que sempre começará em 0). Eles também terão 2
+métodos: o construtor e um método que rola um dado.
+
+class Jogador:
+    # criando o método construtor
+    def __init__(self, nome):
+        # cria uma variável (atributo) dentro do objeto sendo criado
+        # esse atributo recebeu o nome passado como parâmetro
+        self.nome = nome
+        # cria outro atributo no objeto sendo criado
+        # esse atributo não veio como parâmetro, ele sempre começará valendo 0
+        self.pontuacao = 0
+
+    def rolaDado(self):
+        # sorteia um número de 1 a 6:
+        dado = random.randrange(1, 7)
+
+        # atualiza o atributo "pontuacao" do objeto que chamou o método:
+        self.pontuacao = self.pontuacao + dado
+
+2. Objetos
+
+2.1. Instanciando objetos
+
+Ao rodar o exemplo acima, nada acontece. Isso ocorre porque apenas ensinamos o Python como criar jogadores, mas nunca
+chegamos a criar um. É exatamente o mesmo caso de quando definimos uma função mas não a chamamos.
+
+Criamos objetos da mesma maneira que criamos variáveis: damos um nome a eles e atribuímos um "valor". No caso, o "valor"
+atribuido será uma "chamada" para o nome da classe, como se ela fosse uma função. Adicione o seguinte trecho de código
+fora da classe Jogador (ou seja, após a classe e sem tabs):
+
+player1 = Jogador('Mario')
+# vejamos o tipo da "variável" (objeto) que criamos:
+print(type(player1))
+
+Quando chamamos a classe dessa maneira, o Python irá automaticamente executar o método construtor (__init__). Algo que
+pode chamar a atenção é que o método possui 2 parâmetros: self e nome. Porém, nós passamos apenas o nome. O parâmetro
+self é implícito: nós nunca o passamos, ele é apenas um meio de informarmos ao Python qual será o "apelido" do objeto
+que está chamando o método para usarmos internamente no método para acessar seus atributos.
+
+Note que player1 é do tipo 'class Jogador'. Ou seja, a nossa classe é considerada um tipo novo de dado, e os objetos são
+variáveis desse tipo novo.
+
+2.2. Acessando atributos
+
+Para acessar um atributo, usamos o nome do objeto, um ponto e o nome do atributo. Vamos acessar o nome do nosso jogador e
+o seu placar atual:
+
+print(player1.nome)
+print(player1.pontuacao)
+
+Os atributos se comportam como variáveis normais. Podemos ler seu valor e escrever valores novos:
+
+player1.nome = 'Luigi'
+print(player1.nome)
+
+2.3. Executando métodos
+
+Para executar o método, iremos chamá-lo à partir do objeto, da mesma maneira que fizemos com os atributos:
+
+player1.rolaDado()
+print(player1.pontuacao)
+
+    A notação de um método sendo chamado por um objeto parece familiar? É porque já estamos usando essa notação faz um
+    tempo. Lembra do lista.append() ou do string.upper()? Pois bem: list e str são classes, e todas aquelas funções que
+    vimos em capítulos anteriores são métodos de objetos list e str!
+

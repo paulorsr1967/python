@@ -1,0 +1,448 @@
+Listas
+
+Já fizemos alguns programas para ler 2 ou 3 notas e calcular a média. Inclusive já fomos além e aprendemos a verificar se o aluno passou ou não. Vamos rever um exemplo desses:
+
+nota1 = float(input('Digite a primeira nota: '))
+nota2 = float(input('Digite a segunda nota: '))
+
+media = (nota1 + nota2)/2
+
+print(media)
+
+Simples, certo? Mas e se a regra da escola mudasse, e agora cada professor precisasse aplicar 4 provas? Modificaríamos nosso programa:
+
+nota1 = float(input('Digite a primeira nota: '))
+nota2 = float(input('Digite a segunda nota: '))
+nota3 = float(input('Digite a terceira nota: '))
+nota4 = float(input('Digite a quarta nota: '))
+
+media = (nota1 + nota2 + nota3 + nota4)/4
+
+print(media)
+
+Até aqui tudo bem. Mas e se o objetivo fosse testar o quanto o professor conseguiu ensinar? Para isso, poderíamos calcular a média das médias de todos os alunos do professor. Mas e se o professor trabalha em uma faculdade muito grande e suas turmas tem 80 alunos?
+
+aluno1 = float(input('Digite a nota do aluno 1: '))
+aluno2 = float(input('Digite a nota do aluno 2: '))
+aluno3 = float(input('Digite a nota do aluno 3: '))
+aluno4 = float(input('Digite a nota do aluno 4: '))
+aluno5 = float(input('Digite a nota do aluno 5: '))
+aluno6 = float(input('Digite a nota do aluno 6: '))
+aluno7 = float(input('Digite a nota do aluno 7: '))
+aluno8 = float(input('Digite a nota do aluno 8: '))
+aluno9 = float(input('Digite a nota do aluno 9: '))
+aluno10 = float(input('Digite a nota do aluno 10: '))
+
+# ...
+
+```
+Nota do programador: eu me demito. 
+Não ganho bem o suficiente pra ISSO!
+```
+
+Para trabalhar com poucos valores, é fácil e conveniente criar uma variável para cada valor e realizar operações individualmente sobre cada uma. Porém, dizemos que esse tipo de solução não é escalável: o programa não está preparado para lidar com variações no tamanho da base de dados, e modificá-lo para comportá-las pode ser difícil, trabalhoso ou mesmo inviável. Imagine se para cada novo perfil em uma rede social o estagiário precisasse criar uma variável nova para o nome, uma para o e-mail, uma para a data de nascimento, e assim sucessivamente... E depois ainda precisasse de linhas novas de código para ler cada um desses valores do novo usuário!
+1. Listas
+
+É aí que entram as listas. Listas são coleções de objetos em Python. Falando de maneira simplificada, são variáveis que comportam diversos valores ao mesmo tempo. Vejamos alguns jeitos de criar listas em Python:
+
+primeiralista = [] # cria uma lista vazia
+segundalista = list() # cria uma lista vazia
+terceiralista = [1, 3.14, 5, 7, 9, 'onze'] # lista com valores
+
+Note que podemos misturar tipos de dados. A terceiralista possui 4 int, um float e uma str.
+
+Bom, e agora, como fazemos para acessar cada valor? Podemos imaginar a lista da seguinte maneira: imagine que ao invés de ter uma caixa para guardar cada item, temos uma cômoda com várias gavetas. Cada item está em uma gaveta. Não estamos acostumados a dizer que algo está na terceira gaveta do armário? A ideia é a mesma: a lista é uma coleção indexada, ou seja, podemos acessar cada elemento através de índices, que são números indicando a posição. A indexação é automática e começa a partir do zero:
+elemento 	1 	3.14 	5 	7 	9 	11
+índice 	0 	1 	2 	3 	4 	5
+
+Portanto, para acessar o elemento "7" da nossa lista, utilizaríamos o índice 3. Informamos o índice entre colchetes:
+
+terceiralista = [1, 3.14, 5, 7, 9, 'onze'] # lista com valores
+print(terceiralista[3])
+
+A lista é mutável. Isso significa que podemos modificar os valores já existentes:
+
+terceiralista = [1, 3.14, 5, 7, 9, 'onze'] # lista com valores
+terceiralista[3] = 'sete' # troca 7 por 'sete' na lista
+print(terceiralista)
+
+2. Quebrando listas
+
+É possível pegar subconjuntos de nossas listas utilizando o conceito de slices. Ao invés de passar apenas 1 valor entre colchetes (o índice desejado), podemos passar faixas de valores. Veja o exemplo abaixo:
+
+impares = [1, 3, 5, 7, 9, 11, 13, 15, 17]
+meio = impares[3:6]
+print(meio) # resultado na tela: [7, 9, 11]
+
+O primeiro valor é o índice inicial da sublista a ser gerada, e o segundo é o índice final (exclusivo). Podemos omitir um desses valores para indicar que será desde o início ou até o final:
+
+impares = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+primeirametade = impares[:5]
+segundametade = impares[5:]
+print(primeirametade) # resultado: [1, 3, 5, 7, 9]
+print(segundametade) # resultado: [11, 13, 15, 17, 19]
+
+Além de índices inicial e final, podemos também passar um passo para os índices. Veja o exemplo abaixo:
+
+numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+# múltiplos de 3 abaixo de 10:
+mult3sub10 = numeros[3:10:3]
+print(mult3sub10) # resultado: [3, 6, 9]
+
+3. Percorrendo listas
+
+Suponha que você queira acessar cada elemento de sua lista individualmente. Digitar todos os índices manualmente cancelaria a escalabilidade do programa, certo? Portanto, podemos usar um loop para gerar os índices:
+
+pares = [0, 2, 4, 6, 8]
+tamanho = len(pares)
+
+# tamanho vale 5, logo indice recebe os valores 0, 1, 2, 3 e 4
+for indice in range(tamanho):
+    print(pares[indice])
+
+Porém, tem um jeito ainda mais fácil de percorrer a lista. O for não serve apenas para gerar sequências numéricas junto do range: ele serve para percorrer coleções. Portanto, podemos trocar o range pela própria lista:
+
+pares = [0, 2, 4, 6, 8]
+
+for elemento in pares:
+    print(elemento)
+
+Assim como no caso das contagens, "elemento" é apenas uma variável que será criada de forma automática e poderia ter qualquer nome. Em cada repetição do loop, um valor diferente da lista será copiado para elemento.
+
+    Importante: Como os elementos são copiados, caso você modifique o valor de elemento você não irá modificar o valor na lista, e sim uma cópia dele. Além disso, como este loop serve especificamente para percorrer listas, se dentro dele você fizer operações que alterem o tamanho da lista (append ou remove, por exemplo), o loop poderá executar incorretamente, pulando ou repetindo elementos.
+
+Funções de listas
+
+As listas possuem diversas funções prontas bastante úteis. Veremos algumas das mais usadas. Não se preocupe em decorar todas elas: sempre podemos consultar nosso material quando precisarmos de um lembrete! Com tempo e prática você irá aos poucos memorizar algumas delas.
+1. Adicionando elementos
+
+Podemos adicionar novos elementos na lista de duas maneiras. A primeira delas, mais simples, é o append. Ele adiciona um elemento ao final da lista. Veja o exemplo abaixo:
+
+pares = [0, 2, 4, 6, 8]
+pares.append(10)
+print(pares) # resultado: [0, 2, 4, 6, 8, 10]
+
+Outra maneira é com o insert: além do elemento, ele recebe a posição do novo elemento.
+
+pares = [0, 2, 4, 8, 10]
+pares.insert(3, 6)
+print(pares) #resultado: [0, 2, 4, 6, 8, 10]
+
+2. Removendo elementos
+
+Podemos remover o elemento de 2 jeitos: por valor e por posição. O remove irá remover o primeiro elemento encontrado na lista com um dado valor. Ex:
+
+impares = [1, 3, 3, 5, 7, 9]
+impares.remove(3)
+print(impares) # resultado: [1, 3, 5, 7, 9]
+
+O pop remove o elemento que estiver em uma dada posição, independentemente de seu valor:
+
+impares = [1, 3, 5, 7, 8, 9]
+impares.pop(4)
+print(impares) # resultado: [1, 3, 5, 7, 9]
+
+    Se nenhum valor for passado no pop, ele irá remover necessariamente o último elemento da lista.
+
+3. Ordenando a lista
+
+Podemos ordenar a lista usando o sort.
+
+fibonacci = [8, 1, 0, 5, 13, 1, 3, 2]
+fibonacci.sort()
+print(fibonacci) # resultado: [0, 1, 1, 2, 3, 5, 8, 13]
+
+Caso desejássemos ordenar em ordem decrescente, podemos passar a opção reverse = True para o sort:
+
+fibonacci = [8, 1, 0, 5, 13, 1, 3, 2]
+fibonacci.sort(reverse = True)
+print(fibonacci) # resultado: [13, 8, 5, 3, 2, 1, 1, 0]
+
+    Importante: o sort só irá funcionar caso sua lista possua apenas elementos que podem ser comparados entre si (apenas strings ou apenas números, por exemplo). Se uma lista contém tanto strings quanto números, o sort não saberá o que vem primeiro.
+
+Falando em ordem decrescente, é possível simplesmente inverter a ordem dos elementos de uma lista utilizando o reverse:
+
+lista = [1, 5, 'dois', 4, 3.14]
+lista.reverse()
+print(lista) # resultado: [3.14, 4, 'dois', 5, 1]
+
+4. Buscando um elemento
+
+Podemos buscar um elemento (descobrir sua posição) utilizando a função index. Ela irá informar a primeira posição onde um elemento for encontrado:
+
+pi = [3, 1, 4, 1, 5, 9, 2, 6, 5]
+posicao = pi.index(5)
+print(posicao) # resultado: 4
+
+5. Informações sobre a lista
+
+Podemos obter alguns dados sobre a nossa lista: seu tamanho atual (len), seu maior valor (max) e seu menor valor (min).
+
+pi = [3, 1, 4, 1, 5, 9, 2, 6]
+tamanho = len(pi)
+maior = max(pi)
+menor = min(pi)
+print(tamanho, maior, menor) # resultado: 8 9 1
+
+Strings
+1. Strings
+
+Na primeira aula foi mencionado que temos quatro tipos de dados: inteiro, real, lógico e texto/literal (string). Na verdade, o quarto tipo básico seria um caractere. Uma string é uma coleção de caracteres - como se fosse uma lista, mas aceitando apenas elementos textuais. Vamos verificar algumas propriedades das strings!
+1.1. Acessando elementos em uma string
+
+No capítulo sobre Listas, vimos que podemos acessar elementos individuais de uma lista utilizando um índice entre colchetes. Vamos testar a mesma lógica com strings?
+
+frase = "Let's Code"
+print(frase[0])
+print(frase[1])
+print(frase[2])
+print(frase[3])
+print(frase[4])
+
+Note que o programa acima imprime "Let's", com um caractere por linha. Ou seja, ele considerou frase[0] como "L", frase[1] como "e", e assim sucessivamente. Uma string é, de fato, uma coleção de caracteres.
+
+Porém, ao contrário de uma lista, dizemos que uma string é imutável. Isso significa que não podemos alterar um elemento individual da string. 
+O programa abaixo produz um erro:
+
+frase = "let's code"
+frase[0] = 'L'
+
+Para alterar uma string, é necessário redefiní-la, de modo que a string original será descartada e a nova (alterada) será escrita por cima da original. Ou, alternativamente, podemos gerar uma cópia da string com alterações. Veremos mais detalhes adiante.
+1.2. Operações entre strings
+
+Alguns operadores aritméticos funcionam com strings também. Naturalmente, eles não servem para fazer contas, mas nos permitem fazer de forma intuitiva algumas operações bastante úteis.
+
+O operador + serve como um operador de concatenação de strings: unir duas strings. Observe o exemplo abaixo:
+
+string1 = 'Olá'
+string2 = 'Mundo'
+resultado = string1 + string2
+print(resultado) # Na tela: 'OláMundo'
+
+Outro operador que funciona é o operador *. Este operador não é usado entre duas strings, mas entre uma string e um int. Ele repetirá a string o número de vezes dado pelo int.
+
+string = 'Olá mundo!'
+multi = string * 3
+print(multi) # Na tela: 'Olá mundo!Olá mundo!Olá mundo!'
+
+1.2.1. Copiando uma string através de concatenação
+
+Caso você já tenha resolvido problemas de somatório (a essa altura, espera-se que tenha resolvido vários!), você já deve estar acostumado a utilizar um loop onde novos valores são somados em uma mesma variável. Somar os números de uma lista, por exemplo, tem mais ou menos essa carinha:
+
+soma = 0
+for numero in lista:
+    soma = soma + numero
+
+A mesma lógica pode ser aplicada a uma string:
+
+stringInicial = 'Olá Mundo'
+stringFinal = '' # cria uma string vazia
+for letra in stringInicial:
+    stringFinal = stringFinal + letra
+print(stringFinal)
+
+Isso é útil porque antes de "somar" cada letra à string final podemos fazer alterações (como transformar em maiúscula ou minúscula, acrescentar caracteres entre 2 letras etc). É um jeito de fazer tratamento de strings. Veremos mais sobre tratamento de strings no capítulo de funções de strings.
+1.3. Transformando uma string em lista
+
+Strings são imutáveis, e isso pode nos dar um pouco de trabalho quando queremos fazer pequenas alterações, como forçar um caractere a ser maiúsculo ou acrescentar um caractere à string. Uma das formas de fazer envolve a "soma cumulativa" apresentada acima. Outra forma envolve transformar a nossa string em lista, que é uma estrutura mutável. Execute o programa abaixo:
+
+string = "let's Code"
+lista = list(string)
+lista[0] = 'L'
+lista.append('!')
+print(lista) 
+# resultado: 
+# ['L', 'e', 't', "'", 's', ' ', 'C', 'o', 'd', 'e', '!']
+
+Como a lista é mutável, nela conseguimos alterar uma letra e adicionar um símbolo ao final sem dificuldades! Porém, infelizmente nosso resultado é uma lista, o que não ficou muito legível para o usuário. Podemos resolver isso utilizando a função join. Veremos em breve como ele realmente funciona, mas por hora podemos utilizá-lo da seguinte maneira para transformar lista em string:
+
+stringOriginal = "let's Code"
+lista = list(stringOriginal)
+lista[0] = 'L'
+lista.append('!')
+stringFinal = ''.join(lista) # antes do . temos uma string vazia
+print(stringFinal)
+# resultado: "Let's Code!" 
+
+Para as modificações mais comuns, temos algumas funções prontas que poderão ser bastante úteis!
+2. Símbolos especiais
+
+Além de letras, números, sinais de pontuação, símbolos matemáticos etc, uma string pode conter alguns operadores especiais de controle. Esses operadores podem indicar, por exemplo, uma quebra de linha ou uma tabulação. Vejamos os mais comuns:
+2.1. Quebra de linha
+
+Uma quebra de linha indica que o programa exibindo a string deverá quebrar a linha atual e exibir o restante da string na linha seguinte, e é representada na maioria dos sistemas e na web pelo símbolo \n. Execute o programa abaixo e veja o resultado na tela:
+
+print('Olá\nMundo')
+
+2.2. Tabulação
+
+A tabulação indica um recuo equivalente ao da tecla Tab - um recuo de início de parágrafo, ou o recuo que usamos para aninhar linhas de código em Python. Ela é representada pelo símbolo \t. Verifique o resultado do exemplo abaixo:
+
+aprovados = ['Mario', 'Peach', 'Luigi']
+reprovados = ['Wario', 'Bowser']
+
+print('Candidatos aprovados:')
+for nome in aprovados:
+    print('\t', nome)
+
+print('Candidatos reprovados:')
+for nome in reprovados:
+    print('\t', nome)
+
+2.3. Barra
+
+E se nós quiséssemos representar uma string que explica o significado de \n, por exemplo, como proceder? Afinal, ao ver o símbolo \n o programa entenderá que é uma quebra de linha e fará isso ao invés de escrever \n na tela.
+
+Podemos utilizar 2 barras: \\. Ao fazermos isso, o programa entende que é para representar a barra na tela ao invés de interpretá-la como início de outro símbolo especial.
+
+print('Utilizamos o \\n para quebrar linhas.')
+
+2.4 Aspas
+
+Um problema que você deve ter se deparado é que parece impossível representar o símbolo ' em uma string que foi aberta por esse símbolo, já que a segunda ocorrência dele fechará a string. Idem para o símbolo ". Podemos resolver isso da mesma forma que fizemos com a barra: \' irá sempre representar o símbolo ' e \" irá sempre representar o símbolo " ao invés de fechar uma string.
+
+print('Imprimindo uma aspa simples(\') dentro de uma string sem problemas')
+print("Imprimindo aspas duplas(\") dntro de uma string sem problemas")
+
+Funções de strings
+1. Funções de strings
+
+É possível fazer várias operações com strings utilizando técnicas como concatenação ou converter em listas. Porém, certas operações são muito comuns e podem ser muito trabalhosas de fazer na mão. Por isso, temos diversas funções prontas para nos ajudar.
+
+Note que como strings são imutáveis, nenhuma dessas funções irá alterar a string original. Elas sempre retornarão uma string nova com as modificações desejadas.
+
+Vejamos algumas das mais usadas.
+1.1. Maiúsculas e minúsculas
+
+Temos algumas funções prontas para alterar a capitalização das letras. Uma delas é a função upper, que transforma todas as letras da string original em maiúsculas:
+
+frase = 'vAmOs PrOgRaMaR'
+maiuscula = frase.upper()
+print(maiuscula) # resultado: 'VAMOS PROGRAMAR'
+
+Analogamente, temos a função lower para transformar todas as letras em minúsculas:
+
+frase = 'vAmOs PrOgRaMaR'
+minuscula = frase.lower()
+print(minuscula) # resultado: 'vamos programar'
+
+Também é possível formatar a string inteira como um nome próprio: primeira letra de cada palavra maiúscula, todo o restante minúscula. Para isso temos a função title:
+
+frase = 'vAmOs PrOgRaMaR'
+titulo = frase.title()
+print(titulo) # resultado: 'Vamos Programar'
+
+E, por fim, é possível tratar nossa string como uma frase gramaticalmente correta: primeira letra maiúscula, todo o resto minúscula. Essa função é a capitalize:
+
+frase = 'vAmOs PrOgRaMaR'
+correta = frase.capitalize()
+print(correta) # resultado: 'Vamos programar'
+
+    Uma utilidade para essas funções é padronizar entrada de usuário. Quando pedimos para o usuário digitar 'sim' caso ele deseje fazer algo, ele pode digitar 'SIM', 'sim', 'Sim', 'sIm', 'siM', 'SIm', 'sIM' ou 'SiM'. Prever todas essas condições em uma condicional pode ser bastante trabalhoso, ou mesmo impossível. Imagine se fosse uma string de várias letras... Porém, podemos forçar um padrão para a entrada do usuário e comparar com esse padrão:
+
+    usuario = input('Digite "sim" se aceita os termos de uso: ')
+    if usuario.upper() == 'SIM':
+        print('Seja bem-vindo!')
+    else:
+       print('Que pena.') 
+
+    Qualquer forma que o usuário digite a palavra 'sim' será aceita.
+
+1.2. Quebrando uma string
+
+É possível separar uma string em uma lista de substrings. Isso pode ser particularmente útil quando precisamos separar um texto em palavras individuais. A função que realiza essa quebra é o split:
+
+texto = 'uma frase qualquer'
+palavras = texto.split()
+print(palavras) # resultado: ['uma', 'frase', 'qualquer']
+
+O split é mais do que apenas uma função para separar palavras. Podemos opcionalmente passar como parâmetro uma string para ser usada como critério de separação: ao invés de quebrar no espaço em branco, a string principal será quebrada nos pontos onde o parâmetro aparece (e ele será apagado do resultado final).
+
+    Uma utilidade interessante para isso seria quando estamos interessados em ler dados formatados do teclado ou de um arquivo e pegar as informações que nos interessam. Imagine, por exemplo, que você queira que o usuário digite uma data no formato 'dd/mm/aaaa' e em seguida você precise separar dia, mês e ano em três variáveis do tipo int. Isso é possível com o split:
+
+    data = input('Digite uma data: ')
+    listaData = data.split('/')
+    dia = int(listaData[0])
+    mes = int(listaData[1])
+    ano = int(listaData[2])
+    print('Dia: ', dia)
+    print('Mês: ', mes)
+    print('Ano: ', ano)
+
+1.3. Substituindo elementos na string
+
+Uma das ferramentas mais úteis em qualquer editor de texto é o localizar e substituir,
+onde podemos buscar por todas as ocorrências de uma expressão no texto e trocar por outra expressão.
+Em Python temos uma função análoga, o replace. Ele recebe 2 parâmetros: a expressão a ser substituída e a
+expressão que a substituirá.
+Veja o exemplo:
+
+frase = 'Python é difícil. Por ser difícil, devemos estudar.'
+corrigida = frase.replace('difícil', 'fácil')
+print(corrigida)
+# resultado: 'Python é fácil. Por ser fácil, devemos estudar.'
+
+    Em Python não existe uma função para deletar um pedaço de uma string. Porém, podemos usar o replace para substituir
+    uma expressão por uma string vazia, o que tem o mesmo resultado:
+
+    palavra = 'batata'
+    consoantes = palavra.replace('a', '')
+    print(consoantes)
+    # resultado: 'btt'
+
+1.4. Concatenando strings em uma coleção
+
+Imagine que você tem uma coleção (por exemplo, uma lista) de strings e precisa unir todas elas utilizando algum símbolo padrão como separador entre elas. Para isso temos o join. Ele soa pouco intuitivo no começo, então convém executar o exemplo e observar com atenção seu resultado:
+
+lista = ['a', 'b', 'c']
+separador = '123'
+resultado = separador.join(lista)
+print(resultado) # resultado: 'a123b123c'
+
+Já vimos o join antes sendo usado para converter uma lista de volta em string. Para isso, utilizávamos uma string vazia como separador. Assim, os elementos da lista eram concatenados sem separador.
+
+    Dica: um jeito de memorizar facilmente como o join funciona é pensar que o separador entrará no lugar das vírgulas na visualização da lista.
+
+1.5. Formatando strings
+
+Todo mundo que já preencheu um contrato ou uma ficha de cadastro está familiar com textos nesse estilo:
+
+    Eu, __, portador do CPF ___, residente no endereço _____ autorizo o procedimento.
+
+Esse é o texto genérico que vale para todos, e cada um de nós em particular entende que deve preencher os campos em brancos com dados específicos (nome, CPF e endereço, no exemplo acima).
+
+Existe uma função em Python para realizar esse tipo de preenchimento de texto: o format. Suponha que você tenha dados em diferentes variáveis e precisa que todos eles apareçam em uma string. Basta criar uma string com os "espaços em branco" para serem preenchidos e passar as variáveis para a função. Os espaços em branco são representados por chaves ({}).
+
+nome = input('Digite seu nome: ')
+cpf = input('Digite seu cpf: ')
+endereco = input('Digite seu endereço: ')
+contrato = 'Eu, {}, portador do CPF {}, residente no endereço {} autorizo o procedimento.'
+contratoPreenchido = contrato.format(nome, cpf, endereco)
+print(contratoPreenchido)
+
+Porém, o grande charme não está apenas em preencher - isso poderia ser feito concatenando com o operador +. Nós podemos colocar opções de formatação nos nossos dados, como número de casas em um número.
+
+Imagine que você queira exibir uma data no formato dd/mm/aaaa. Em situações normais, dias e meses inferiores a 10 apareceriam com apenas 1 casa (int não é representado com zeros à esquerda). Porém, podemos especificar no format que gostaríamos de representar um inteiro com 2 casas, preenchendo com zero casas em branco.
+
+dia = 1
+mes = 2
+ano = 2020
+data = '{:02d}/{:02d}/{:04d}'.format(dia, mes, ano)
+print(data) # resultado: 01/02/2020
+
+Vamos entender o que está dentro das chaves: o símbolo : indica que passaremos opções. O símbolo 'd' indica que estamos representando números inteiros em base decimal (dígitos de 0 a 9). Os símbolos '2' e '4' indicam, respectivamente, 2 casas ou 4 casas. E o símbolo '0' indica que se faltar dígitos, os espaços devem ser preenchidos com zero.
+
+Vejamos outro exemplo, dessa vez com casas decimais. É normal postos de gasolina mostrarem o preço do litro com 3 casas decimais. Mas o preço final a ser cobrado deverá ter 2 casas. Porém, ao multiplicar o preço por litro pelo valor em litros, é provável que o total dê várias casas decimais. Usaremos o format para representar com apenas 2 casas.
+
+precoLitro = 5.234
+litros = 29.5
+total = precoLitro * litros
+print(total) # resultado: 154.403
+
+precoFinal = 'R$ {:.2f}'.format(total)
+print(precoFinal) # resultado: R$ 154.40
+
+Neste caso, o 'f' indica que o número é float. Já o '.2' indica que queremos 2 casas após o ponto decimal. Note que ele não apenas descarta as casas excedentes, e sim arredonda corretamente o número.
+
+    O format possui tantas opções diferentes que existe um site inteiro dedicado a explicar e dar exemplos: https://pyformat.info/
+

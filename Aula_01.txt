@@ -1,0 +1,292 @@
+Antes de continuar, assista o v�deo na aba "Videos"
+
+Errata: Os operadores de divis�o e divis�o inteira apresentados no v�deo a partir de 25:15 est�o trocados. Os operadores aceitos para essas opera��es s�o, respectivamente, / e //.
+Vari�veis, entradas e sa�das
+1. Vari�veis
+
+Vari�veis s�o "pedacinhos de mem�ria" onde guardamos dados. Sempre que referenciamos o nome, o pedacinho de mem�ria � acessado e seu dado � recuperado.
+
+Criamos vari�veis dando um nome a elas e usando o operador de atribui��o (o sinal de igualdade: =) para atribuir um valor inicial.
+
+x = 10
+
+No exemplo acima, foi criada uma vari�vel chamada x que guarda o valor 10. Ou seja, reservamos um pedacinho de mem�ria e guardamos o n�mero 10 l�.
+2. Tipos de vari�veis
+
+Vari�veis em Python possuem 4 tipos b�sicos:
+
+    int: n�meros inteiros, ou seja, n�meros sem parte decimal: 0, 5, -1, 1000
+    float: n�meros reais, ou seja, n�meros com parte decimal: 1.0, -2.7, 3.14
+    str: cadeias de caracteres (strings), ou seja, dados textuais: 'Ol� Mundo!', "eu tenho 18 anos"
+    bool: valores l�gicos (booleanos), ou seja, apenas um entre dois valores poss�veis: True ou False
+
+nome = 'Z�' # uma vari�vel do tipo string - note as aspas
+email = "ze@letscode.com.br" # outra string
+idade = 22 # uma vari�vel inteira
+salario = 5999.85 # uma vari�vel float - usamos ponto, n�o v�rgula
+receberNewsletter = True # uma vari�vel bool
+
+    Dica: Tente sempre utilizar nomes intuitivos para suas vari�veis. O nome deveria ser uma boa descri��o do dado que a vari�vel guarda. Nomes como 'x', 'y', 'z', 'a', 'b', 'c', 'a1', 'a2', 'a3' etc podem se tornar bastante confusos quando nossos c�digos s�o muito grandes.
+
+3. Coment�rios
+
+Note que nos exemplos acima, escrevemos textos no meio do c�digo utilizando o s�mbolo #. Esses textos s�o coment�rios: quando utilizamos o s�mbolo #, o Python ir� ignorar tudo o que vier em seguida (na mesma linha). Utilizamos coment�rios para explicar peda�os do nosso c�digo para que n�s mesmos ou outros colegas no futuro entendam o que fizemos e possam modificar ou corrigir o c�digo com mais facilidade. Tamb�m podemos escrever coment�rios de m�ltiplas linhas utilizando aspas triplas - neste caso, utilizamos-as para abrir e depois para fechar o bloco de coment�rios.
+
+'''
+Este � um coment�rio de v�rias linhas.
+Tudo que veio ap�s o primeiro trio de aspas e antes do segundo
+ser� ignorado pelo Python.
+'''
+
+4. Sa�das
+
+Chamamos de sa�das do nosso programa todos os dados que s�o gerados pelo programa e ser�o fornecidos para o usu�rio. A fun��o de sa�da em tela no Python � o print. Colocamos entre par�nteses o dado que queremos que apare�a.
+
+print('ol� mundo!') # exibe a frase 'ol� mundo' na tela
+
+Os dados a serem exibidos n�o precisam ser valores constantes, como a frase fixa acima. Eles podem ser vari�veis:
+
+idade = 20
+print(idade)
+
+    Note que quando usamos aspas, o Python trata o valor como uma string, um texto literal. Quando n�o usamos aspas, o Python ir� considerar que aquele � o nome de uma vari�vel e ir� acess�-la para buscar seu valor.
+
+Podemos exibir m�ltiplos dados em um print. Para isso, basta separ�-los por v�rgula e eles ir�o aparecer na tela na mesma ordem que apareceram no c�digo:
+
+nome = 'Mario'
+linguagem = 'Python'
+print('Oi, eu sou o', nome, 'e eu programo em', linguagem)
+
+```
+Resultado na tela:
+Oi, eu sou o Mario e eu programo em Python
+```
+
+5. Entradas
+
+Assim como temos dados de sa�da - dados gerados pelo c�digo e fornecidos para o usu�rio - tamb�m temos dados de entrada: informa��es que o usu�rio possu� e deve fornecer ao c�digo. Para receber entradas pelo teclado, utilizaremos a fun��o input. Devemos fazer uma vari�vel receber o valor capturado pelo input.
+
+nome = input()
+print('Ol�', nome)
+
+O programa acima captura o nome do usu�rio e em seguida mostra a mensagem "ol�" seguida do nome do usu�rio. Note que o programa fica parado em uma tela em branco com um cursor piscando aguardando a digita��o pelo usu�rio. Isso pode ser confuso para o usu�rio, que n�o sabe o que o programa est� esperando. Por isso, dentro dos par�nteses do input podemos colocar uma mensagem simples informando o que o programa gostaria que ele fizesse:
+
+nome = input('Qual � o seu nome?')
+print('Ol�', nome)
+
+5.1. Determinando o tipo da entrada
+
+Vamos imaginar um programa que informa quantos anos falta para que uma crian�a atinja a maioridade. Podemos ler a idade da crian�a pelo teclado (entrada), subtrair a idade do n�mero 18 (processamento) e exibir o resultado da conta na tela (sa�da). Considere a solu��o abaixo:
+
+idade = input('Digite a sua idade: ')
+resto = 18 - idade
+print('Faltam', resto, 'anos.')
+
+Se voc� copiar e executar o programa, ele dar� erro na segunda linha. Isso ocorre porque o teclado � uma "m�quina de escrever" um pouco mais moderna. Portanto, tudo que entra pelo teclado � considerado pelo Python como texto (ou seja, str). Por�m, n�o podemos "fazer contas" com textos. Fazemos contas com n�meros. Portanto, neste caso, precisamos falar para o Python interpretar a nossa entrada como um n�mero. Um bom tipo de dado para "idade" seria um n�mero inteiro. Fazemos isso colocando o nome do tipo desejado, e entre par�nteses colocamos nosso input:
+
+idade = int(input('Digite a sua idade: '))
+resto = 18 - idade
+print('Faltam', resto, 'anos.')
+
+6. Operadores
+
+Como podemos observar no exemplo anterior, o Python faz opera��es aritm�ticas de maneira bastante intuitiva, similar ao que estamos acostumados. Os operadores aceitos s�o:
+
+    Soma: +
+    Subtra��o: -
+    Multiplica��o: *
+    Divis�o: /
+    Divis�o inteira: //
+    Resto da divis�o: %
+    Pot�ncia: **
+
+    numero1 = int(input('Digite um n�mero: '))
+    numero2 = int(input('Digite outro n�mero: ''))
+    soma = numero1 + numero2
+    subtracao = numero1 - numero2
+    multiplicacao = numero1 * numero2
+    divisao = numero1 / numero2
+    divinteira = numero1 // numero2
+    resto = numero1 % numero2
+    elevado = numero1 ** numero2
+    print('Soma: ', soma)
+    print('Subtra��o: ', subtracao)
+    print('Multiplica��o: ', multiplicacao)
+    print('Divis�o: ', divisao)
+    print('Divis�o inteira: ', divinteira)
+    print('Resto da divis�o: ', resto)
+    print('Pot�ncia: ', elevado)
+
+        Operadores de divis�o: Note que temos 3 operadores de divis�o. O que seria cada um deles? Vamos supor que numero1 seja 15 e numero2 seja 6. Ao calcular essa divis�o, chegamos na seguinte situa��o:
+
+        15 |__ 6
+        03 | 2
+
+        Note que, considerando apenas n�meros inteiros, n�o conseguimos mais prosseguir com a divis�o. Neste caso, a divis�o inteira (numero1 // numero2) dar� 2. J� o resto da divis�o (numero1 % numero2) dar� 3. Por�m, considerando casas decimais � poss�vel prosseguir com a divis�o:
+
+        15 |__ 6
+        30 | 2,5
+        0
+        Portanto, a divis�o comum (numero1 / numero2) dar� 2.5.
+
+Opera��es l�gicas
+1. Opera��es booleanas
+
+Na aula passada, vimos que nossos dados podem ter 4 tipos b�sicos: str (texto), int (n�mero inteiro), float (n�mero real) e bool (l�gico). Vimos diversas opera��es aritm�ticas tamb�m, como a soma, a divis�o ou a pot�ncia, cujos resultados s�o int ou float. Por�m, podemos ter tamb�m opera��es cujo resultado � bool: s�o opera��es l�gicas. Opera��es l�gicas tipicamente s�o compara��es:
+
+comparacao1 = 5 > 3
+print(comparacao1)
+comparacao2 = 5 < 3
+print(comparacao2)
+
+Se executarmos o c�digo acima, a sa�da que teremos na tela ser�:
+
+True
+False
+
+Isso ocorre porque 5 � maior que 3. Portanto, comparacao1 recebeu uma express�o cujo valor l�gico � verdadeiro, portanto seu resultado foi True, e o oposto ocorreu para comparacao2. O Python possui 6 operadores de compara��o:
+
+    Maior que: >
+    Maior ou igual: >=
+    Menor que: <
+    Menor ou igual: <=
+    Igual: ==
+    Diferente: !=
+
+        Note que o operador para comparar se 2 valores s�o iguais � ==, e n�o =. Isso ocorre porque o operador = � o nosso operador de atribui��o: ele diz que a vari�vel � sua esquerda deve receber o valor da express�o � direita. O operador de == ir� testar se o valor � sua esquerda � igual ao valor � sua direita e ir� responder True ou False, como todos os outros operadores de compara��o.
+
+1.1. Conjunções lógicas
+
+Em alguns casos precisamos testar se duas ou mais condi��es s�o verdadeiras. Imagine, por exemplo, que o crit�rio de aprova��o em uma escola seja m�dia superior a 6.0 e presen�a superior a 75%. Neste caso, o aluno precisa atender a ambos os crit�rios para ser aprovado. Se ele tirou uma �tima nota mas faltou demais, ser� reprovado. Se ele compareceu a todas as aulas mas teve notas baixas, idem. O c�digo abaixo testa se � verdade que o aluno foi aprovado:
+
+media = float(input('Digite a m�dia do aluno: '))
+presenca = float(input('Digite as presen�as do aluno: '))
+
+aprovado = media >= 6.0 and presenca >= 0.75
+print(aprovado)
+
+Execute o c�digo acima e teste algumas combina��es diferentes de valores. Note que basta uma das condi��es ser falsa para que o resultado total seja False.
+
+Por�m, nem sempre precisamos que ambas as condi��es sejam verdadeiras. V�rios de n�s j� nos deparamos com promo��es de queima de estoque anunciadas da seguinte maneira: "promo��o v�lida at� o dia 15 deste m�s ou enquanto durarem os estoques". Neste caso, para a promo��o acabar, n�o � necess�rio que ambas as coisas ocorram (atingir o dia 15 e zerar o estoque). Se ainda temos 10 itens no estoque mas hoje � dia 16, a promo��o acabou. Se hoje � dia 5 mas o estoque est� zerado, a promo��o acabou. O programa abaixo testa se a promo��o acabou:
+
+diaFinal = int(input('Digite o dia do m�s para encerrar a promo��o: '))
+diaAtual = int(input('Digite o dia do m�s atual: '))
+estoque = int(input('Digite a quantidade de itens no estoque: '))
+
+acabou = diaAtual > diaFinal or estoque == 0
+print(acabou)
+
+Fa�a alguns testes com o programa acima e note que basta uma condi��o ser verdadeira para seu resultado ser True.
+
+    Resumo:
+
+        and: verdadeiro se condi��o 1 for verdadeira e condi��o 2 for verdadeira
+        or: verdadeiro se condi��o 1 for verdadeira ou condi�� 2 for verdadeira
+
+Express�es condicionais
+1.1. Se
+
+Os programas do cap�tulo Opera��es L�gicas n�o s�o "amig�veis" para o usu�rio. Ao inv�s de mostrar True ou False, por exemplo, seria mais �til exibir se o aluno foi "Aprovado" ou "Reprovado". Para que possamos escrever na tela as mensagens "Aprovado" ou "Reprovado", � necess�rio que haja em algum ponto do c�digo o trecho print('Aprovado') e o trecho print('Reprovado'). Por�m, n�o gostar�amos que ambos fossem exibidos ao mesmo tempo. Uma condicional � uma instru��o em Python que decide se outras linhas ser�o ou n�o executadas dependendo do resultado de uma condi��o (opera��o l�gica). Se a condi��o for verdadeira, as linhas s�o executadas. Sen�o, s�o ignoradas. A condicional mais b�sica em Python � o if (se):
+
+nota1 = float(input('Digite a nota 1: '))
+nota2 = float(input('Digite a noat 2: '))
+
+media = (nota1 + nota2)/2
+
+if media >= 6.0:
+    print('Aprovado')
+print('M�dia: ', media)
+
+Execute o programa acima. Note que se (if) a m�dia � maior ou igual a 6.0, ele exibe a mensagem "Aprovado" e depois a m�dia. Caso contr�rio, ele apenas exibe a m�dia.
+
+    Para dizermos que uma ou mais linhas "pertencem" ao nosso if, usamos um s�mbolo de par�grafo (tecla "Tab" no teclado). O programa sabe que o if "acabou" quando as linhas param de ter "tabs". Esses tabs s�o chamados de indenta��o.
+
+1.2. Sen�o
+
+Note que conseguimos fazer nosso programa decidir se ele exibe a mensagem "Aprovado" ou n�o. O pr�ximo passo seria fazer ele decidir entre 2 mensagens diferentes: "Aprovado" ou "Reprovado". Um primeiro jeito de fazer isso seria um segundo if invertendo a condi��o:
+
+nota1 = float(input('Digite a nota 1: '))
+nota2 = float(input('Digite a noat 2: '))
+
+media = (nota1 + nota2)/2
+
+if media >= 6.0:
+    print('Aprovado')
+if media < 6.0:
+    print('Reprovado')
+
+print('M�dia: ', media)
+
+O programa acima funciona. Por�m, conforme nossos programas come�am a ficar mais complexos e nossos if come�am a ter linhas demais, podemos nos perder e esquecer que esses 2 if s�o 2 casos mutuamente exclusivos. Pior ainda, podemos vir a acrescentar condi��es novas em um e esquecer de atualizar no outro. Em casos onde temos condi��es mutuamente exclusivas, podemos utilizar um par if/else (se/sen�o). Se a condi��o for verdadeira, fa�a tal coisa. Sen�o, fa�a outra coisa.
+
+nota1 = float(input('Digite a nota 1: '))
+nota2 = float(input('Digite a noat 2: '))
+
+media = (nota1 + nota2)/2
+
+if media >= 6.0:
+    print('Aprovado')
+else:
+    print('Reprovado')
+
+print('M�dia: ', media)
+
+    Note que o else n�o possui condi��o. A condi��o dele � impl�cita: � a nega��o da condi��o do if. Se o if executar, o else n�o executa e vice-versa. Consequentemente, o else n�o pode existir sem um if.
+
+1.3. Aninhando condi��es
+
+� poss�vel aninhar condi��es: ou seja, colocar um novo if dentro de outro if ou else. Imagine que nossa escola n�o reprova direto o aluno com nota inferior a 6, e sim permite que ele fa�a uma recupera��o. Por�m, o aluno precisa ter tirado no m�nimo m�dia 3 para que permitam que fa�a a recupera��o. Assim temos:
+
+    Se nota maior ou igual a 6: aprovado.
+    Sen�o:
+        Se nota entre 6 e 3: recupera��o.
+        Sen�o, reprovado. Em Python:
+
+nota1 = float(input('Digite a nota 1: '))
+nota2 = float(input('Digite a noat 2: '))
+
+media = (nota1 + nota2)/2
+
+if media >= 6.0:
+    print('Aprovado')
+else:
+    if media >= 3.0:
+        print('Recupera��o')
+    else:
+        print('Reprovado')
+
+print('M�dia: ', media)
+
+1.4. Sen�o-se
+
+Note que se come�armos a aninhar muitas condi��es (if dentro de else dentro de else dentro de else...), nosso c�digo pode come�ar a ficar confuso, com a apar�ncia de uma "escadinha":
+
+Se
+Sen�o:
+    Se
+    Sen�o:
+        Se
+        Sen�o:
+            Se:
+            Sen�o:
+                Se:
+                 ...
+
+Isso pode tornar o c�digo bastante complexo e dif�cil de atualizar ou corrigir erros posteriormente. Para quebrar a "escadinha", existe a possibilidade de juntarmos o "se" do pr�ximo n�vel com o "sen�o" do n�vel anterior: o elif: else + if (sen�o + se). O elif s� � executado se um if der errado (ou seja, ele � um else), mas ele tamb�m tem uma condi��o que deve ser respeitada (ou seja ele tamb�m � um if). Podemos reescrever nosso c�digo anterior utilizando um elif:
+
+nota1 = float(input('Digite a nota 1: '))
+nota2 = float(input('Digite a noat 2: '))
+
+media = (nota1 + nota2)/2
+
+if media >= 6.0:
+    print('Aprovado')
+elif media >= 3.0:
+    print('Recupera��o')
+else:
+    print('Reprovado')
+
+print('M�dia: ', media)
+
+    Podemos usar quantos elif n�s quisermos. Sempre que um deles der errado, o pr�ximo ser� testado. Quando algum deles der certo, todo o restante ser� ignorado. Opcionalmente, podemos ter um else ao final do bloco, que s� ser� executado se o if e todos os elif derem errado. O bloco obrigatoriamente deve ser iniciado com um if.
+

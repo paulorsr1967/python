@@ -1,0 +1,356 @@
+Recordação Aula 04
+with open("ibovespa.csv") as f:
+    # posição 4 => posição de fechamento
+    f.readline()
+    #print(header)
+    linhas = f.readlines()
+    maximo = 0
+    minimo = 99999999999
+    datamax = ''
+    datamin = ''
+
+    for linha in linhas:
+        #print(linha)
+        lista = linha.split(',')
+        if lista[4] != 'null':
+            fechamento = float(lista[4])
+            if fechamento > maximo:
+                maximo = fechamento
+                datamax = lista[0]
+            if fechamento < minimo:
+                minimo = fechamento
+                datamin = lista[0]
+
+f.close()
+with open("petr4.csv") as f:
+    # posição 4 => posição de fechamento
+    f.readline()
+    #print(header)
+    linhas = f.readlines()
+    for linha in linhas:
+        #print(linha)
+        lista = linha.split(',')
+        if lista[0] == datamax:
+            petramax = lista[4]
+        if lista[0] == datamin:
+            petramin = lista[4]
+
+print('Máximo : ' + datamax + ' Valor Bovespa : ' + str(maximo) + ' \tValor Petra : ' + petramax)
+print(f'Mínimo : {datamin} Valor Bovespa : {str(minimo)} \tValor Petra : {petramin}')
+
+import os
+print(os.listdir())
+os.chdir('C:\BelezaSoft')
+print(os.listdir())
+import math
+print(math.sqrt(9))
+import string
+print(string.ascii_letters)
+print(string.ascii_uppercase)
+print(string.ascii_lowercase)
+print(string.digits)
+
+
+Estruturas de dados
+
+Em aulas anteriores, sempre que precisamos trabalhar com múltiplos dados, utilizamos as listas para armazená-los. Porém, o
+Python possui outras coleções que podem ser úteis em situações diferentes. Vejamos um pouquinho sobre duas estruturas
+diferentes: tuplas e dicionários.
+
+1. Tuplas
+
+Tuplas são estruturas bastante parecidas com listas:
+
+    Podem guardar diversos dados.
+    Podem guardar tipos diferentes de dados.
+    São indexadas (podemos acessar elementos individuais por índices).
+    São iteráveis (podemos percorrer com for).
+
+Porém, elas possuem uma grande diferença: elas são imutáveis. Assim como no caso das strings, após a criação da tupla você
+não pode alterar elementos individuais, adicionar elementos, remover elementos ou alterar a ordem dos elementos.
+
+Bom, por que usaríamos algo parecido com uma lista mas com menos recursos? Temos 3 bons motivos:
+
+        É um jeito de sinalizar que esses dados não deveriam ser alterados. Apesar de ser possível redefinir a tupla (assim
+        como já fizemos com strings), o programador que estiver mexendo no código alheio e fizer isso estará ciente de que
+        talvez outras partes do código precisem daqueles dados inalterados.
+        É um meio de garantir que os elementos estarão em uma ordem específica.
+        Velocidade. Para que uma estrutura seja mutável, seu tamanho é variável, e isso envolve algoritmos complexos para
+        que nenhum dado seja perdido. Para acessar um certo elemento de uma lista, todos os elementos anteriores serão
+        percorridos. Já em uma tupla é possível um salto calculado direto para o elemento em questão. Em programas pequenos
+        isso é pouco perceptível, mas ao trabalhar com bases de dados enormes e/ou realizar muitas operações complexas com
+        os dados, a lista pode ser um gargalo, e a tupla seria a solução.
+
+Vejamos um pequeno exemplo mostrando as diferentes operações que podemos fazer com tupla:
+
+# para criar uma tupla utilizamos parênteses
+tupla = (1, 2, 3, 5, 'sete', 11.0)
+
+# note que para acessar um elemento pelo índice ainda usamos colchete
+print(tupla[4])
+
+print('Percorrendo a tupla...')
+for elemento in tupla:
+    print(elemento)
+
+# criando uma lista com os elementos da tupla
+lista = list(tupla)
+# adicionando um elemento na lista - ao contrário da tupla, a lista é mutável!
+lista.append(13)
+print(lista)
+
+# criando uma tupla a partir de uma lista:
+tuplanova = tuple(lista)
+print(tuplanova)
+
+2. Dicionários
+
+Quando utilizamos um dicionário (o de papel, com definições), não temos o hábito de procurar pela palavra que está em uma
+determinada posição. Ao invés disso, nós buscamos pela palavra em si, e ao encontrá-la ela contém uma definição.
+
+A estrutura dicionário em Python é uma coleção de dados. Porém, ela não é indexada. Ao adicionarmos elementos em um dicionário,
+sempre o fazemos aos pares: todo elemento terá uma chave e um valor.
+
+A chave será uma string que utilizaremos como se fosse o índice. É como se fosse a palavra que buscamos em um dicionário
+de papel.
+
+O valor pode ser qualquer dado: um int, um float, uma str, um bool, uma lista, uma tupla, outro dicionário... Ele é como
+se fosse a definição que encontramos vinculada à palavra que encontramos no dicionário de papel.
+
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+print(dicionario['curso'])
+print(dicionario['escola'])
+
+2.1. Adicionando elementos em um dicionário
+
+Para adicionar elementos, não precisamos de uma função pronta (como o append das listas). Basta "acessar" a nova chave e
+atribuir um novo valor.
+
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario['unidade'] = 'Faria Lima'
+print(dicionario)
+
+2.2. Percorrendo um dicionário
+
+Dicionários podem ser percorridos com um for. Ao fazer isso, as chaves serão percorridas, não os valores. Porém, à partir
+da chave obtém-se o valor:
+
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario['unidade'] = 'Faria Lima'
+
+for chave in dicionario:
+    print(chave, '--->', dicionario[chave])
+
+2.3. Separando chaves e valores
+
+O Python possui funções para obter, separadamente, todas as chaves ou todos os valores de um dicionário. Elas são,
+respectivamente, keys e values. Podemos transformar o retorno dessa função em uma lista ou tupla.
+
+dicionario = {'curso':'Python Pro', 'escola':"Let's Code"}
+dicionario['unidade'] = 'Faria Lima'
+
+chaves = list(dicionario.keys())
+valores = list(dicionario.values())
+
+print('Chaves: ', chaves)
+print('Valores:', valores)
+
+2.4. Testando a existência de uma chave
+
+Antes de criar uma chave nova em um dicionário, convém testar se ela já existe, para evitar sobrescrever um valor.
+Podemos fazer isso com o operador in (sim, o mesmo que usamos no for!). Neste contexto, ele retornará True se a
+chave existir e False caso não exista.
+
+Vamos supor que no exemplo abaixo o valor de 'cursos' seja uma lista com todos os cursos que o usuário está fazendo.
+
+dicionario = {'escola':"Let's Code", 'unidade':'Faria Lima'}
+
+# Neste caso, 'cursos' ainda não existe.
+# Cairemos no else e será criada uma lista com a string 'Python'.
+if 'cursos' in dicionario:
+    dicionario['cursos'].append('Python')
+else:
+    dicionario['cursos'] = ['Python']
+
+# Agora a chave já existe.
+# Portanto, será adicionado 'Data Science' à lista.
+if 'cursos' in dicionario:
+    dicionario['cursos'].append('Data Science')
+else:
+    dicionario['cursos'] = ['Data Science']
+
+print(dicionario)
+
+    Experimente o operador in em uma lista, tupla ou string. Ele pode ser bastante útil!
+
+Funções com parâmetros variáveis e retornos múltiplos
+
+Quando estudamos funções, aprendemos que elas podem receber dados (parâmetros) e podem fornecer uma resposta (retorno).
+Porém, o número de parâmetros era fixo para cada função: um dado para cada parâmetro que declaramos na definição da função.
+Da mesma forma, a função poderia retornar exatamente um resultado.
+
+Em alguns casos, mais flexibilidade seria útil. Utilizando tuplas e dicionários conseguimos essa flexibilidade.
+
+1. Funções com retorno múltiplo
+
+Vejamos um caso simples: uma função que retorna os valores máximo e mínimo de uma coleção. Você pode retornar os valores
+separados por vírgula. Vamos imprimir o resultado e verificar o que acontece.
+
+def maxmin(colecao):
+    maior = max(colecao)
+    menor = min(colecao)
+    return maior, menor
+
+numeros = [3, 1, 4, 1, 5, 9, 2]
+
+resposta = maxmin(numeros)
+print(resposta)
+print(type(resposta)) # mostra o tipo da variável resposta
+
+Surpresa! Ele tratou o retorno como uma tupla! Quando utilizamos valores separados por vírgula em Python, os valores são
+agrupados em uma tupla, mesmo que não estejamos utilizando parênteses. Essa informação é relevante porque podemos separar
+a tupla em varias variáveis usando a mesma sintaxe:
+
+def maxmin(colecao):
+    maior = max(colecao)
+    menor = min(colecao)
+    return maior, menor
+
+numeros = [3, 1, 4, 1, 5, 9, 2]
+
+maiorNum, menorNum = maxmin(numeros)
+print(maiorNum)
+print(menorNum)
+
+No exemplo acima é mais perceptível a sensação de que a função retornou 2 valores e o programa recebeu esses 2 valores
+individualmente. Por dentro, tupla. Por fora, retorno múltiplo.
+
+2. Funções com quantidade variável de parâmetros
+
+Talvez você já tenha notado que o print é uma função. Se não notou, esse é um bom momento para pensar a respeito. Nós sempre
+usamos com parênteses, nós passamos informações dentro dos parênteses (os dados a serem impressos) e ele faz um monte de
+coisa automaticamente: converte todos os dados passados para string, contatena todas as strings com um espaço entre elas
+e as escreve na tela.
+
+Algo que o print tem que as nossas funções não tinham é a capacidade de receber uma quantidade variável de parâmetros.
+Nós podemos passar 0 dados (e, neste caso, ele apenas pulará uma linha), 1 dado, 2 dados, 3 dados... Quantos dados quisermos,
+separados por vírgula, e ele funcionará para todos esses casos. Se temos que declarar todos os parâmetros, como fazer para
+que múltiplos dados possam ser passados?
+
+2.1. Agrupando parâmetros
+
+A solução é utilizar o operador * - que, neste caso, não será uma multiplicação. Ao colocarmos o * ao lado do nome de um
+parâmetro na definição da função, estamos dizendo que aquele argumento será uma coleção. Mais especificamente, uma tupla.
+Porém, o usuário não irá passar uma tupla. Ele irá passar quantos argumentos ele quiser, e o Python automaticamente criará
+uma tupla com eles.
+
+O exemplo abaixo cria uma função de somatório que pode receber uma quantidade arbitrária de números.
+
+def somatorio(*numeros):
+    # remova o símbolo de comentário das linhas abaixo para entender melhor o parâmetro
+    # print (numeros)
+    # print(type(numeros))
+    soma = 0
+    for n in numeros:
+        soma = soma + n
+    return soma
+
+s1 = somatorio(5, 3, 1)
+s2 = somatorio(2, 4, 6, 8, 10)
+s3 = somatorio(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+print(s1, s2, s3)
+
+2.2. Expandindo uma coleção
+
+O exemplo acima funciona muito bem quando o usuário da função possui vários dados avulsos, pois ele os agrupa em uma coleção.
+Mas o que acontece quando os dados já estão agrupados?
+
+def somatorio(*numeros):
+    print (numeros)
+    print(type(numeros))
+    soma = 0
+    for n in numeros:
+        soma = soma + n
+    return soma
+
+lista = [1, 2, 3, 4, 5]
+s = somatorio(lista)
+print(s)
+
+Note que o programa dará erro, pois como os print dentro da função ilustram, foi criada uma tupla, e na primeira posição
+da tupla foi armazenada a lista. Isso não funciona com a lógica que projetamos.
+
+Para casos assim, utilizaremos o operador * na chamada da função também. Na definição, o operador * indica que devemos
+agrupar itens avulsos em uma coleção. Na chamada, ele indica que uma coleção deve ser expandida em itens avulsos.
+
+def somatorio(*numeros):
+    print (numeros)
+    print(type(numeros))
+    soma = 0
+    for n in numeros:
+        soma = soma + n
+    return soma
+
+lista = [1, 2, 3, 4, 5]
+s = somatorio(*lista)
+print(s)
+
+No programa acima, a lista é expandida em 5 valores avulsos, e em seguida a função agrupa os 5 itens em uma tupla chamada "numeros".
+
+3. Parâmetros opcionais
+
+Outra possibilidade são funções com parâmetros opcionais. Note que isso é diferente de termos quantidade variável de parâmetros.
+
+No caso da quantidade variável, normalmente são diversos parâmetros com a mesma utilidade (números a serem somados, valores
+a serem exibidos etc).
+
+Já os parâmetros opcionais são informações distintas que podem ou não ser passadas para a função. Como exemplo podemos citar
+o csv.reader e o csv.writer vistos anteriormente. Os parâmetros que passamos pelo nome (delimiter e lineterminator) são
+opcionais: se você omiti-los, a função usará valores padrão.
+
+3.1. Criando parâmetros opcionais
+
+Para criar parâmetros opcionais, usaremos **, e os parâmetros passados serão agrupados em um dicionário: o nome do parâmetro
+será uma chave, e o valor será... O valor.
+
+O exemplo abaixo cadastra usuários em uma base de dado. Um usuário pode fornecer seu nome, seu CPF ou ambos.
+
+def cadastro(**usuario):
+    if not ('nome' in usuario) and not ('cpf') in usuario:
+        print('Nenhum dado encontrado!')
+    else:
+        arquivo = open('usuarios.txt', 'a')
+        if 'nome' in usuario:
+            arquivo.write(usuario['nome'] + '\n')
+        if 'cpf' in usuario:
+            arquivo.write(str(usuario['cpf']) + '\n')
+        arquivo.write('-----\n')
+        arquivo.close()
+        print('Cadastro realizado com sucesso!')
+
+cadastro(nome = 'João', cpf = 123456789) # tem ambos
+cadastro(nome = 'José') # tem apenas nome
+cadastro(cpf = 987654321) # tem apenas cpf
+cadastro(rg = 192837465) # não tem nome nem cpf
+
+3.2. Expandindo um dicionário
+
+Analogamente ao caso dos parâmetros múltiplos, é possível que o usuário da função já tenha os dados organizados em um
+dicionário. Neste caso, basta usar ** na chamada da função para expandir o dicionário em vários parâmetros opcionais.
+
+def cadastro(**usuario):
+    if not ('nome' in usuario) and not ('cpf') in usuario:
+        print('Nenhum dado encontrado!')
+    else:
+        arquivo = open('usuarios.txt', 'a')
+        if 'nome' in usuario:
+            arquivo.write(usuario['nome'] + '\n')
+        if 'cpf' in usuario:
+            arquivo.write(str(usuario['cpf']) + '\n')
+        arquivo.write('-----\n')
+        arquivo.close()
+        print('Cadastro realizado com sucesso!')
+
+maria = {'nome':'Maria', 'cpf':2468135790}
+cadastro(**maria)
+

@@ -1,0 +1,165 @@
+Pandas
+
+O Pandas é uma das bibliotecas mais usadas em data science.
+
+Esta biblioteca possibilita a estruturação e manipulação de dados de maneira simples e eficiente. Com ela, é possível ler dados a partir de arquivos; manipulá-los da forma que desejarmos; e depois escrevê-los de volta para um arquivo. Tudo de uma maneira simples, direta e intuitiva!
+
+Para entendermos melhor o pandas e passar a utilizá-lo, precisamos entender suas estruturas fundamentais: as Series e o DataFrame.
+
+    Atenção: A planilha csv utilizada nessa aula pode ser baixada nesse link
+
+1. Instalação
+
+Caso você esteja utilizando o Anaconda, o Colab, ou qualquer outra dessas ferramentas você provavavelmente não precisará instalar as dependências dessa aula. Mas, caso precise, rode o comando:
+
+pip3 install pandas
+pip3 install matplotlib
+pip3 install scipy
+
+2. Séries
+
+Para entender o começo de pandas precisamos entender como manipular a sua estrutura mais simples de dados: uma série.
+
+Uma série é uma lista simples (ou uma coluna) de dados do mesmo tipo associado a uma lista de labels, chamadas de index.
+
+import pandas as pd
+
+serie_inicial = pd.Series([9.0, 2.23, 4.5, 5.6])
+print(serie_inicial)
+
+Deveria retornar na tela:
+
+0    9.0
+1    2.23
+2    4.5
+3    5.6
+dtype: float64
+
+Note que ao imprimir uma série obtemos tanto os valores da série quanto os índices. Assumindo que você queira imprimir apenas os valores da série basta executar:
+
+print(serie_inicial.values)
+
+O que retornará para você:
+
+array([ 9.0,  2.23, 4.5 ,  5.6 ])
+
+A maior parte dos desafios e tarefas básicas com pandas podem ser solucionadas com séries. Entretanto, o que fez essa biblioteca ser tão famosa na comunidade de Python foi o conceito de DataFrames que veremos na próxima seção.
+3. DataFrame
+
+Um DataFrame no pandas representa uma estrutura tabular, ou seja, uma tabela ou planilha.
+
+DataFrames são organizados em colunas (sendo cada coluna uma Série) e podem ser indexados tanto por linhas quanto pelo nome de suas colunas.
+
+É possível criar um DataFrane de duferentes formas:
+
+    A partir de uma lista de listas;
+    A partir de um dicionário;
+    A partir da leitura de um arquivo .csv, um arquivo .xlsx ou qualquer outra fonte tabular.
+
+Para criar um DataFrame a partir de um dicionário, fazemos:
+
+    Dica Let's Code: É comum na área utilizarmos as letras df para abreviar dataframe quando trabalhando com pandas
+
+import pandas as pd
+
+dados_lets_code = {
+    'Nomes Professores': ['Tiago Marto', 'Rafael Moreira', 'Rafael Costella'],
+    'Número de alunos': [12, 18, 15],
+    'Número de aulas dadas': [4, 12, 6],
+}
+
+df = pd.DataFrame(dados_lets_code, columns=['Nomes Professores', 'Número de alunos', 'Número de aulas dadas'])
+
+3.1 Trabalhando com um DataFrame
+
+Normalmente quando trabalhamos com DataFrames estamos manipulando uma quantidade massiva de dados. Sendo assim o código:
+
+print(df)
+
+Fica cada vez mais inaceitável! Imagina imprimir uma tabela com 80 colunas e mais de 250 mil linhas!! :scream:
+
+Pensando nessas dimensões a biblioteca vem com dois métodos bastante inteligentes, chamados de head e tail que permitem 'espiarmos' no começo e no final da lista. Assim sendo podemos controlar o acesso aos dados do DataFrame da seguinte forma:
+
+print('Primeiras dez linhas: ', df.head(10))
+print('Últimas dez linhas: ', df.tail(10))
+
+Se o dataframe que estivermos analisando possuir colunas nomeadas podemos acessar isoladamente cada uma dessas colunas através do seu nome. Um dataframe é composto por uma série pandas e, assim, podemos acessa-la.
+
+print(df['Nomes Professores']) # retorna uma série
+
+    Atenção!! Dataframes não podem ser acessados diretamente pela representação de linha e coluna
+
+Suponha que você queira acessar a primeira linha do dataframe. Não é possível e retornará um erro você acessá-la da forma:
+
+print(df[0]) # Esse código dará um erro!!
+
+Ou seja, primordialmente, para acessarmos dataframes, devemos nos referir a coluna que estamos falando.
+
+Caso seja extremamente necessário o acesso por índice, podemos utilizar o método iloc, ou integer loccation, que permite passarmos o acesso ao dado na conhecida notação (linha, coluna)
+
+print(df.iloc[0, 2]) # imprime o dado na primeira linha e terceira coluna
+
+3.2 Manipulando Dataframes
+
+Tradicionalmente, ao trabalhar com pandas, queremos analisar grandes quantidades de dados e fornecer análises em cima dessas informações. Para tal, a nossa fonte de informações pode vir de diversos lugares: csvs, excels, apis, sistemas de arquivo em nuvem e etc. O pandas permite buscar informação em poucas linhas de diversas dessas fontes.
+
+Vamos ver agora como ler dados a partir de um arquivo csv!
+
+Baixe o arquivo indicado no começo deste material, o renomeie para "fx_monthly_BRL_USD.csv", e o coloque na mesma pasta em que está seu código Python.
+
+Feito isso, podemos ler o arquivo com uma única linha de código, usando a função pd.read_csv(), que tem como argumento o caminho do arquivo (como ele está na mesma pasta que o código, o caminho é simplesmente o nome do arquivo):
+
+df = pandas.read_csv("fx_monthly_BRL_USD.csv")
+df.head()
+
+Note como é simples ler um arquivo csv com o Pandas!
+
+    Observação: Caso você queira ler dados de uma planilha do excel (arquivo .xlsx), o pandas também tem uma função pra fazer isso de maneira muito simples! A função é:
+
+    pd.read_excel("nome_do_arquivo.xlsx")
+
+    Bem simples, não é mesmo?
+
+E, além da simplicidade, o pandas também já estrutura os dados em um DataFrame, o que nos ajuda muitissimo a processar estes dados, como veremos a seguir! O output do código acima é as 5 primeiras linhas do dataframe criado:
+
+    timestamp    open    high     low   close
+0  2020-06-12  0.1869  0.2068  0.1842  0.1975
+1  2020-05-29  0.1818  0.1892  0.1664  0.1869
+2  2020-04-30  0.1916  0.1975  0.1737  0.1818
+3  2020-03-31  0.2230  0.2238  0.1904  0.1916
+4  2020-02-28  0.2330  0.2370  0.2211  0.2230
+
+Com um dataframe, podemos analisar de maneira holística todo o nosso arquivo sem ter que ficar percorrendo termo a termos.
+
+Suponha que queremos saber os dias que obtivemos uma paridade menor que 0.17 entre real e dólar considerando o preço mais baixo do dia (coluna low).
+
+Em pandas isso seria tão simples quanto:
+
+print(df.low < 0.17)
+
+O que retornaria um output para nós no seguinte formato:
+
+0     False
+1      True
+2     False
+3     False
+4     False
+      ...
+62    False
+63    False
+64    False
+65    False
+66    False
+Name: low, Length: 67, dtype: bool
+
+    Dica Lets: Note que o print de uma série ou dataframe do pandas naturalmente omite algumas linhas, mas na última linha podemos ter uma análise completa da série
+
+Sabendo analisar informações de verdadeiro ou falso, filtrar um dataframe acaba sendo tão fácil quanto:
+
+print(df[df.low < 0.17])
+
+O que nos devolveria apenas uma única linha, nos informando que no período analisado obtivemos apenas um dia com o preço low mais baixo do que 0.17.
+
+    timestamp    open    high     low   close
+1  2020-05-29  0.1818  0.1892  0.1664  0.1869
+

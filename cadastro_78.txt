@@ -1,0 +1,3 @@
+nome,andré
+idade,29
+sexo,m

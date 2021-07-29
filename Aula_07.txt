@@ -1,0 +1,391 @@
+Métodos mágicos
+
+Uma classe pode conter diversos métodos diferentes para realizar múltiplas tarefas. Porém, o programador que for
+utilizar uma classe com muitos métodos pode ter bastante trabalho para lembrar de todos esses métodos... Pense em
+todos os métodos de strings que estudamos, por exemplo. Eles nem sequer são todos os métodos existentes, mas já
+foram muitos! Para tornar nossa classe mais intuitiva de usar (princípio da abstração), podemos reaproveitar alguns
+recursos padrão do Python que todo programador já sabe utilizar e adaptá-los para nossa classe.
+
+Considere o código abaixo:
+
+string1 = "Let's "
+string2 = "Code"
+string3 = string1 + string2
+print(string3)
+
+Sabemos que o resultado será a string "Let's Code"... Mas pare para pensar um pouco: o operador + é um operador
+aritmético, ele serve para fazer conta. E aqui estamos usando-o com strings, e mesmo assim ele funciona. Quem
+desenvolveu a classe str concluiu que seria mais intuitivo para nós usar o sinal + para concatenar strings do
+que memorizar um nome como "concat". Podemos aplicar o mesmo conceito em nossas classes: redefinir o comportamento
+de operadores e funções padrão do Python para nossa classe.
+
+Para isso, basta criar métodos em nossa classe que respeitem certas regrinhas, como nomes padrão já pré-determinados
+pelo Python. Sempre que ele encontrar esses métodos, ele saberá que é para chamá-los quando o operador for usado
+entre elementos da classe. Esses são os chamados métodos mágicos.
+
+Para este capítulo, consideremos uma classe chamada Horario. Essa classe servirá para representar horários, dados
+contendo 3 campos: hora (h), minuto (m) e segundo (s).
+
+class Horario:
+    def __init__(self, **dados):
+        if 'h' in dados:
+            self.h = dados['h']
+        else:
+            self.h = 0
+        if 'm' in dados:
+            self.m = dados['m']
+        else:
+            self.m = 0
+        if 's' in dados:
+            self.s = dados['s']
+        else:
+            self.s = 0
+
+    O que seria esse **dados? E esses if ... in ...? Se não se recorda, revise o capítulo de funções com parâmetros
+    opcionais. Estamos dando liberdade a quem usa essa classe para passar valores para os campos h, m ou s, e iremos
+    adotar o valor 0 para os campos omitidos.
+
+1. Representação
+
+Você já experimentou dar print em um objeto de uma classe que criou? Experimente criar um objeto da nossa nova classe
+Horario e imprimi-lo.
+
+Bom, nosso objeto possui 3 atributos e um método. O Python não sabe qual ou quais dessas informações são relevantes
+para representar um horário, em qual ordem elas deveriam aparecer ou mesmo se possuem algum tipo de formatação
+especial. Por exemplo, quando imprimimos uma lista, ele não mostra apenas o seu conteúdo: ele também mostra os
+símbolos [, ] e , para indicar o início e final da lista, bem como a separação entre os elementos. No caso da
+nossa classe Horario, seria interessante representar os objetos mostrando os 3 campos com 2 dígitos e separados
+por dois pontos (o famoso hh:mm:ss).
+
+Ao imprimir um objeto, o print procura por um método chamado __repr__. Caso o objeto tenha esse método, o seu
+retorno é utilizado pelo print.
+
+Vamos modificar nossa classe adicionando o seguinte método:
+
+def __repr__(self):
+    representacao = '{:02d}:{:02d}:{:02d}'.format(self.h, self.m, self.s)
+    return representacao
+
+Tente novamente imprimir o objeto e observe o resultado!
+
+    Na realidade, existem 2 métodos mágicos ligados à representação: o __str__ é o ideal para fazer uma representação
+    "bonitinha" para printarmos e o usuário ver na tela, enquanto o __repr__ seria para criar uma representação não
+    ambígua de um objeto (ex: 2 objetos Horario distintos que coincidentemente estejam com os mesmos 3 valores nos
+    parâmetros apareceriam iguais no __str__ e diferentes no __repr__). A utilidade da representação não ambígua
+    seria, por exemplo, gerar logs indicando o que cada objeto está fazendo para encontrarmos bugs.
+
+    Porém, quando imprimimos uma coleção de objetos, a impressão da coleção (ex: uma lista de objetos Horario) chamará
+    o __repr__, e não o __str__ dos objetos. Além disso, na ausência do __str__, o __repr__ é usado automaticamente
+    em todos os casos.
+
+    Para fins didáticos, podemos usar apenas o __repr__ neste curso. Os alunos interessados em um aprofundamento podem
+    ler mais em https://stackoverflow.com/questions/1436703/difference-between-str-and-repr
+
+2. Operadores aritméticos
+
+Conforme vimos na introdução deste capítulo, podemos ensinar para o Python como tratar uma soma entre dois objetos
+de uma certa classe. Isso vale para todas as outras operações aritméticas que conhecemos, como subtração, divisão,
+resto de divisão etc.
+
+Quando nós fazemos em Python uma operação do tipo c = a + b, o Python "traduz" isso da seguinte maneira:
+c = a.__add__(b) Ou seja, uma operação aritmética é um método chamado pelo objeto à esquerda do operador que recebe o
+operador à direita como parâmetro!
+
+Vejamos um exemplo útil: sabemos como somar 2 horários: soma-se os segundos primeiro, em seguida os minutos, e por
+fim as horas. Se os segundos estourarem 60, subtraimos 60 do campo de segundos e somamos 1 no campo de minutos.
+Idem para o campo de minutos. Podemos "ensinar" essa regra para o Python dentro do __add__, e dali em diante
+podemos somar 2 horários.
+
+Adicione o seguinte código à sua classe:
+
+def __add__(self, other):
+    # soma hora com hora, minuto com minuto e segundo com segundo
+    h = self.h + other.h
+    m = self.m + other.m
+    s = self.s + other.s
+
+    # corrige os segundos em excesso
+    if s >= 60:
+        s = s - 60
+        m = m + 1
+
+    # corrige os minutos em excesso
+    if m >= 60:
+        m = m - 60
+        h = h + 1
+
+    # um Horario + outro Horario = terceiro Horario
+    # vamos criar um objeto Horario usando o h, m e s calculados!
+    resultado = Horario(h=h, m=m, s=s)
+
+    # retornando o resultado para poder fazer operações como "c = a + b"
+    return resultado
+
+Fora da classe, no programa principal, faça o teste:
+
+duracaoJogo = Horario (h=1, m=30)
+duracaoIntervalo = Horario (m=15)
+
+transmissaoTotal = duracaoJogo + duracaoIntervalo
+print(transmissaoTotal)
+
+Temos os seguintes métodos mágicos aritméticos:
+
+    __add__ soma: +
+    __sub__ subtração: -
+    __mul__ multiplicação: *
+    __truediv__ divisão: /
+    __floordiv__ divisão inteira: //
+    __mod__ resto de divisão: %
+    __pow__ potência: **
+
+3. Operadores lógicos
+
+Assim como podemos redefinir os operadores aritméticos, podemos redefinir os operadores lógicos através de métodos
+mágicos. Da mesma maneira que os operadores aritméticos, os operadores lógicos são traduzidos para o Python em termos
+de uma chamada para um método do objeto à esquerda recebendo como parâmetro o objeto da direita. Por exemplo, um teste
+de igualdade do tipo a > b torna-se a.__gt__(b). Os métodos de operadores lógicos devem retornar True ou False.
+
+No caso da nossa classe Horario, sabemos que se o campo h de um objeto for maior do que o do outro, ele é
+necessariamente maior. Se ambos os campos forem iguais, o campo m deverá ser maior. Se ambos h e m forem iguais,
+o desempate fica no campo s.
+
+Adicione o método mágico abaixo à sua classe Horario para que ela consiga utilizar o operador >:
+
+def __gt__(self, other):
+    # hora é maior
+    if self.h > other.h:
+        return True
+    # empate na hora, mas minuto é maior
+    elif self.h == other.h and self.m > other.m:
+        return True
+    # empate na hora e no minuto, mas segundo é maior
+    elif self.h == other.h and self.m == other.m and self.s > other.s:
+        return True
+    # em todos os outros casos, o objeto é definitivamente menor
+    else:
+        return False
+
+No programa principal (fora da classe), vamos aproveitar os objetos do exemplo anterior e fazer um teste:
+
+if duracaoJogo > duracaoIntervalo:
+    print('Temos mais tempo de jogo do que de intervalo')
+else:
+    print('Temos mais tempo de intervalo do que de jogo')
+
+Os métodos lógicos são:
+
+    __gt__ maior que (greater than): >
+    __ge__ maior ou igual (greater or equal): >=
+    __lt__ menor que (less than): <
+    __le__ menor ou igual (less or equal): <=
+    __eq__ igual (equal): ==
+    __ne__ diferente (not equal): !=
+
+    Este capítulo abordou os métodos mágicos mais comuns. Temos vários outros, mas além de ser uma lista muito longa,
+    alguns deles são para funcionalidades avançadas não abordadas no curso. Quem estiver interessado em se aprofundar
+    para fazer projetos mais sofisticados pode conferir esse guia excelente: https://rszalski.github.io/magicmethods/
+
+    Desafio: complemente a nossa classe Horario implementando métodos mágicos para subtração e para todos os operadores
+    lógicos. Experimente também ajustar o construtor para prevenir horários inválidos: por exemplo, se alguém passar
+    m=90, faça m=30 e some +1 em h.
+
+Métodos e atributos estáticos
+
+Todos os exemplos até agora mostraram atributos e métodos pertencendo aos objetos: a classe definia quais atributos e
+métodos o objeto deveria ter, mas cada objeto tem um valor distinto para cada atributo e os métodos devem ser chamados
+a partir dos objetos.
+
+Porém, há casos onde gostaríamos que uma certa informação fosse coletiva. Pense, por exemplo, na população do Brasil:
+cada pessoa deve saber seu próprio nome e seu próprio CPF. Porém, é competência da administração federal ter dados como
+o número total de habitantes e registro de todos os CPFs em circulação. Não faria sentido exigir que cada habitante
+soubesse todas essas informações.
+
+Da mesma forma, realizar o censo para manter essas informações atualizadas não é de competência de cada cidadão
+individual, mas da administração federal. Ela deverá ter seus mecanismos para sempre ter informações atualizadas
+sobre os habitantes.
+
+Esses problemas são resolvidos pelos atributos estáticos e métodos estáticos.
+
+1. Atributos estáticos
+
+Um atributo estático nada mais é do que um atributo que é coletivo, pertencente à classe como um todo.
+Não haverá uma cópia diferente dele para cada objeto, mas sim uma única informação que pode ser acessada diretamente
+na classe, sem sequer necessitar que um objeto já tenha sido instanciado.
+
+Para criar um atributo estático, basta criar uma variável (atribuindo um valor inicial a ela) dentro da classe,
+mas fora de qualquer um de seus métodos.
+
+class Pessoa:
+    # criando um atributo estático
+    populacao = 0
+
+    def __init__(self, nome, cpf):
+        self.nome = nome
+        self.cpf =  cpf
+        # o __init__ é chamado quando uma Pessoa nova é criada...
+        # ...portanto, vamos atualizar nossa populacao sempre que alguém for criado!
+        Pessoa.populacao = Pessoa.populacao + 1
+
+maisVelho = Pessoa('Mario', 12345678901)
+maisNovo = Pessoa('Luigi', 98765432109)
+
+# Note que para acessar o atributo estático, não referenciamos um objeto, e sim a classe!
+print('População atual: ', Pessoa.populacao)
+
+2. Métodos estáticos
+
+Imagine que você precise de algum método que seja bastante útil para a classe, mas que não necessariamente precise
+de um objeto. Chamamos esses métodos de métodos estáticos.
+
+Para que um método seja estático, podemos utilizar um decorator (de maneira simplificada, um modificador de
+comportamento da função). Nós iremos escrever @staticmethod acima da definição do método.
+
+Nosso método não terá um self, apenas parâmetros que sejam realmente necessários. E na hora de usá-lo, usaremos o
+nome da classe ao invés do nome de um objeto, como fizemos com os atributos estáticos.
+
+Adicione o seguinte método à classe Pessoa:
+
+@staticmethod
+    def popTotal():
+        print('População total:', Pessoa.populacao)
+
+Note que ele não possui self, pois ele não precisa de acesso a nenhuma informação de qualquer objeto em particular.
+
+Para chamá-lo, inclua a seguinte linha no programa principal:
+
+Pessoa.popTotal()
+
+Herança e polimorfismo
+
+Imagine que você tenha várias classes com várias características em comum: os mesmos atributos, os mesmos métodos ou
+métodos parecidos e com o mesmo nome e mesmos parâmetros. Reescrevê-los várias vezes é um desperdício de tempo e pode
+induzir ao erro. Além disso, se pecisarmos atualizar um método, precisaremos fazer a modificação múltiplas vezes. A
+herança e o polimorfismo são a solução para esse problema.
+
+1. Herança
+
+Para que diversas classes possuam os mesmos atributos e métodos, podemos criar uma classe com esses atributos e
+métodos e dizer que as outras classes herdarão dessa classe. As classes filhas possuem os mesmos atributos e métodos
+que a classe mãe. Para herdar, colocamos o nome da classe mãe entre parênteses na frente do nome da classe filha em
+sua definição.
+
+Se necessário, podemos redefinir um método na classe filha - assim, temos a garantia de que todas as classes filhas
+terão métodos com o mesmo nome, mas eles podem ter comportamentos diferentes.
+
+Execute o código abaixo:
+
+class Animal:
+    def __init__(self, nome):
+        self.nome = nome
+
+    def fala(self):
+        print(self.nome, 'faz barulho.')
+
+
+class Cachorro(Animal):
+    def fala(self):
+        print(self.nome, 'faz au au.')
+
+class Gato(Animal):
+    def fala(self):
+        print(self.nome, 'faz miau.')
+
+class Dinossauro(Animal):
+    pass
+    # pass é um comando "vazio": ele não faz nada, apenas evita erro por não colocarmos nada dentro da classe
+
+cachorrinho = Cachorro('Bidu')
+gatinho = Gato('Mingau')
+dino = Dinossauro('Horácio')
+
+cachorrinho.fala()
+gatinho.fala()
+dino.fala()
+
+Note que as classes Cachorro e Gato não possuem método construtor, apenas um método "fala", mas mesmo assim conseguimos
+criar objetos com um atributo "nome". O Python procurou o método construtor nessas classes, e ao não encontrar, procurou
+em sua classe mãe (Animal) e o usou. Ao chamarmos o método "fala", o Python usou o das próprias classes filhas, já que
+elas a possuiam.
+
+No caso da classe Dinossauro, fomos ainda mais radicais: não colocamos nada dentro da classe. Mas não só conseguimos
+criar um objeto com o atributo "nome", como conseguimos usar o método "fala". Assim como no caso do construtor, foi
+usado o método da classe mãe.
+
+1.1. Herdando parcialmente um método
+
+Imagine que você queira que um método de uma classe filha seja muito parecido com um método de uma classe mãe,
+mas possua algumas linhas a mais de código. Novamente caímos no problema da reutilização de código: se copiarmos
+e colarmos o método na classe filha e acrescentarmos algumas linhas, caso tenhamos que atualizar ou corrigir o
+método na classe mãe no futuro, precisaríamos nos lembrar de atualizá-lo também na classe filha.
+
+Podemos utilizar o método super. Ele nos dá acesso dentro de uma classe filha aos métodos originais da classe mãe.
+Assim, podemos redefinir na classe filha um método, digitar apenas as linhas de código novas/diferentes e em seguida
+usar o super para chamar o método original.
+
+Atualize a sua classe Cachorro para que ela agora também crie um atributo "raca", mas sem precisarmos novamente criar
+o atributo "nome":
+
+class Cachorro(Animal):
+    # redefinindo o __init__
+    def __init__(self, nome, raca):
+        # pedaço novo de código
+        self.raca = raca
+        # chamando a __init__ da classe mãe para fazer o resto do trabalho
+        super().__init__(nome)
+
+    def fala(self):
+        print(self.nome, 'faz au au.')
+
+2. Polimorfismo
+
+A palavra "polimorfismo" vem do grego antigo e significa "várias formas". A ideia do polimorfismo em programação
+é que um objeto de uma certa classe pode se comportar como objeto de outras classes. Mais especificamente, objetos
+de uma classe filha podem também ser tratados como se pertencessem à classe mãe.
+
+O método isinstance recebe 2 parâmetros: um objeto e uma classe. Ele retorna True caso o objeto pertenca à classe,
+e False caso não pertença. Cole os testes no programa abaixo para verificar que um cachorro não é um gato, um gato
+não é cachorro, cachorro é cachorro, gato é gato e ambos são animais:
+
+# o cachorrinho é cachorro?
+print(isinstance(cachorrinho, Cachorro))
+# o gatinho é gato?
+print(isinstance(gatinho, Gato))
+# o cachorrinho é gato?
+print(isinstance(cachorrinho, Gato))
+# o gatinho é cachorro?
+print(isinstance(gatinho, Cachorro))
+# o cachorrinho é animal?
+print(isinstance(cachorrinho, Animal))
+# o gatinho é animal?
+print(isinstance(gatinho, Animal))
+
+Isso é útil porque uma função que seja feita para lidar com Animal será capaz de lidar com qualquer classe herdeira
+de Animal com a mesma facilidade. Modifique a classe Animal para registrar todos os animais criados e ter uma função
+que faz todos eles falarem:
+
+class Animal:
+    # lista estática de animais criados
+    animais = []
+
+    def __init__(self, nome):
+        self.nome = nome
+        # criamos o animal e o colocaremos na lista estática
+        Animal.animais.append(self)
+
+    def fala(self):
+        print(self.nome, 'faz barulho.')
+
+    @staticmethod
+    def falatorio():
+        for a in Animal.animais:
+            a.fala()
+
+Agora façamos um teste no programa principal:
+
+Animal.falatorio()
+
+A classe Animal nem sequer sabe quem herda dela. Ela não conhece Cachorro, Gato ou Dinossauro.
+Mas ela sabe que todo animal possui um atributo nome e um método fala, e por isso não importa a qual subclasse
+eles pertencem:
+todos também pertencem à classe Animal.

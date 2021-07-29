@@ -1,0 +1,3 @@
+nome,rychard
+idade,27
+sexo,m

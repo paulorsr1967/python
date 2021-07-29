@@ -1,0 +1,376 @@
+Funções
+
+Imagine que você fez um programinha para gerar estatísticas sobre vários dados dos funcionários: média dos salários, média
+de vendas, média de feedback positivo, média de feedback negativo, média de notas atribuídas pelos gestores... Você tem uma
+lista com os salários, uma lista com o total de vendas de cada funcionário, e assim sucessivamente. Então você fez o seguinte
+trecho de código:
+
+soma = 0
+for elemento in lista:
+    soma = elemento
+media = soma/len(lista)
+
+Em seguida, você copiou e colou esse trecho de código várias vezes mudando "lista" pelo nome de cada lista individual, e
+"media" pelo nome do atributo. Trabalhoso, certo? Imagine que agora você percebeu o erro no trecho acima, e terá que sair
+corrigindo em todos os lugares onde colou o código errado. Imagina que conveniente se você pudesse arrumar apenas uma vez
+e todas as ocorrências fossem corrigidas automaticamente...
+
+1. Funções
+
+Uma função é um pedacinho de programa. Nós podemos dar um nome para nossa função, e toda vez que precisarmos que esse
+pedacinho de programa seja executado, nós o chamamos pelo nome.
+
+Com isso, podemos evitar repetição de código, tornando nossos códigos mais enxutos e legíveis. Além disso, fica mais fácil
+corrigir problemas como o ilustrado no início deste capítulo.
+
+1.1. Criando funções
+
+Em Python, podemos criar funções com o comando def, e em seguida damos um nome para nossa função.
+
+def minhaPrimeiraFuncao():
+    print('Olá Mundo')
+
+Se você executar o código acima, o que aparecerá na tela? Nada. Tudo que o código acima faz é definir minhaPrimeiraFuncao,
+mas ela só será executada quando for chamada pelo nome.
+
+# criando a função
+def minhaPrimeiraFuncao():
+    print('Olá Mundo')
+
+# o programa começa de verdade aqui:
+minhaPrimeiraFuncao() # chamada para a função
+
+Quando chamamos uma função, a execução do programa principal é pausada, o fluxo de execução é desviado para a função, e ao
+final dela ele retornará para o ponto onde parou. Veja o exemplo abaixo:
+
+# criando a função
+def minhaPrimeiraFuncao():
+    print('Olá Mundo')
+
+# o programa começa de verdade aqui:
+print('aaa')
+minhaPrimeiraFuncao() # chamada para a função
+print('bbb')
+
+O resultado na tela será:
+
+aaa
+Olá Mundo
+bbb
+
+1.1.2. Parâmetros de uma função
+
+Nossas funções devem ser tão genéricas quanto possível se quisermos reaproveitá-las ao máximo.
+
+Um dos pontos onde devemos tomar cuidado é na entrada de dados da função: se usarmos um input dentro da função, teremos
+uma função que resolverá um certo problema desde que o usuário vá digitar os dados do problema. Mas e se quisermos usar
+a função em um trecho do programa onde o usuário digita os dados e em outro ponto onde os dados são lidos de um arquivo?
+
+Podemos resolver isso fazendo a leitura de dados no programa principal, fora de nossa função, e então passaremos os dados
+para a função. Dados passados para a função são chamados de parâmetros ou argumentos de uma função. Observe o exemplo abaixo:
+
+def soma(a, b):
+    resultado = a + b
+    print(resultado)
+
+soma(3, 2) # resultado na tela: 5
+soma(4, 7) # resultado na tela: 11
+x = 5
+soma(10, x) # resultado na tela: 15
+
+Quando colocamos "a" e "b" entre parênteses na criação da função, estamos especificando que a função recebe 2 parâmetros.
+O primeiro valor que for passado entre parênteses para nossa função será referenciado por "a" e o segundo será referenciado
+por "b". É como se "a" e "b" fossem variáveis que vão receber a cópia dos valores passados para a função. Note que podemos
+passar valores puros ou variáveis (como fizemos com "x" na última linha), e não precisamos criar variáveis "a" e "b" em
+nosso programa principal para "casar" com os parâmetros da função.
+
+1.1.3. Retorno de uma função
+
+Certas funções possuem uma "resposta": elas resolvem um problema (por exemplo, uma equação matemática) e nós estamos
+interessados no resultado. No exemplo anterior, tínhamos uma soma e nós imprimíamos a soma na tela.
+
+Porém, ainda pensando na questão da função ser genérica: será que nós sempre queremos o resultado na tela? Imagine que
+você esteja utilizando a fórmula de Bháskara para resolver uma equação de segundo grau. No meio da fórmula existe uma
+raiz quadrada. Nós não queremos o resultado da raiz quadrada na tela, nós queremos o resultado dentro do nosso programa
+em uma variável para jogar em outra equação.
+
+Bom, parece fácil: vamos tentar pegar o resultado fora da função... Certo?
+
+def soma(a, b):
+    resultado = a + b
+
+media = resultado/2
+print(media)
+
+Se você executar o programa acima, verá uma mensagem de erro dizendo que "resultado" não existe. Toda variável criada
+dentro de uma função é privada. Ela só pode ser acessada dentro da função e será destruída ao final da execução da função.
+Para disponibilizar para o programa um valor que foi gerado dentro da função, utilizamos o comando return.
+
+def soma(a, b):
+    resultado = a + b
+    return resultado
+
+s = soma(10, 5)
+media = s/2
+print(media)
+
+Quando fizemos s = soma(10, 5), a função soma foi chamada, e ao final da execução, s recebeu o valor retornado por ela.
+Deste ponto em diante podemos utilizar a "resposta" da nossa função em nosso programa principal.
+
+    O return, além de disponibilizar um valor, encerra a execução da função. Se a sua função possuir outras linhas após
+    o return, elas serão ignoradas.
+
+2. Recursividade
+
+Uma função pode chamar outra função? Sim. Rode o programa abaixo e observe que ele funciona:
+
+def soma(a, b):
+    resultado = a + b
+    return resultado
+
+def media(x, y):
+    s = soma(x, y)
+    resultado = s/2
+    return resultado
+
+m = media(10, 5)
+print(m)
+
+Mas e se uma função referenciasse ela mesma? Isso também funciona, e chama-se função recursiva, ou recursão.
+
+A ideia vem da matemática. Vejamos um exemplo. Imagine uma função matemática f(x) que seja igual a 2 elevado a x. Podemos
+reescrevê-la da seguinte maneira:
+
+f(x) =
+
+    1, se x = 0
+    2 * f(x-1), se x > 0
+
+Ou seja, imagine que você queira calcular f(4). Como 4 > 0, teremos: f(4) = 2 * f(3) Precisamos expandir
+f(3): f(4) = 2 * (2 * f(2)) E assim sucessivamente: f(4) = 2 * (2 * (2 * f(1))) f(4) = 2 * (2 * (2 * (2 * f(0)))) Opa,
+f(0) nós conhecemos: está definido lá em cima como 1. Portanto: f(4) = 2 * 2 * 2 * 2 * 1 f(4) = 16
+
+Note que nós decompomos um problema em várias instâncias "menores" do problema. Quebramos a formulação de uma multiplicação
+enorme por vários casos de 2 x f(n). Chamamos essa estratégia de dividir para conquistar, e ela envolve identificar 2 etapas
+bastante claras do problema:
+
+    Caso base: é um caso para o qual temos um valor conhecido (no exemplo acima, f(0) = 1)
+    Caso geral: é a chamada recursiva, onde faremos referência à própria função.
+
+Note também que esse comportamento tem o comportamento de pilha: se colocamos 3 pratos empilhados sobre a mesa, precisamos
+tirar primeiro o último que colocamos, certo? Caso contrário, a pilha toda tomba. No caso da recursão, para obter f(4)
+caímos em f(3), depois f(2), depois f(1), depois f(0) e foi para ele que obtivemos a primeira resposta, que em seguida
+usamos para calcular f(1), depois calcular f(2), depois f(3) e só então chegamos em f(4). O primeiro passo do problema
+foi o último a ser resolvido.
+
+Em Python, nossa função ficaria assim:
+
+def potenciadedois(x):
+    if x == 0:
+        return 1
+    else:
+        return 2*potenciadedois(x-1)
+
+Se chamarmos potenciadedois(4), o que acontecerá? O programa começará a executar a função, cairá no else e encontrará a
+função chamada novamente. Neste caso, ele salva x valendo 4 e salva que a execução foi interrompida nessa linha. Então
+ele cria um novo x valendo 3, cai novamente no else e salva que a execução foi interrompida nessa linha, e assim
+sucessivamente.
+
+    Note que para cada passo recursivo, as variáveis da função são copiadas e também é salvo o ponto onde a execução parou.
+    Ou seja, funções recursivas podem consumir bastante memória, além de tempo de processamento para ficar criando cópias.
+    A vantagem delas é o rigor matemático: podemos transcrever funções matemáticas quase exatamente como elas são, sem
+    criar loops e variáveis para ficar guardando estados.
+
+Bibliotecas (módulos)
+
+Assim como pode ser útil reaproveitar um pedaço de código em vários pontos de um mesmo programa, pode ser útil reaproveitar
+esse pedaço em vários outros projetos também. Várias linguagens de programação oferecem o que chamamos de bibliotecas, e
+em Python comumente chamamos de módulos.
+
+1. Criando módulos
+
+Você pode criar algumas funções dentro de um arquivo. Ao colocar esse arquivo na mesma pasta que o restante do projeto,
+você pode usar o comando import para informar ao programa que ele deve buscar funções naquele arquivo. A partir deste
+momento, você terá acesso às funções daquele módulo.
+
+# Salve este código como contas.py
+def soma(a, b):
+    resultado = a + b
+    return resultado
+
+def media(x, y):
+    s = soma(x, y)
+    resultado = s/2
+    return resultado
+
+# Salve este outro código como principal.py na mesma pasta do contas.py
+# Execute este código, não o contas.py
+
+import contas
+
+x = contas.media(3, 9)
+print(x)
+
+2. Módulos pré-instalados
+
+A comunidade Python costuma descrevê-lo como uma linguagem com baterias inclusas. Com isso eles querem afirmar que já vem
+bastante coisa pronta "de fábrica" e você não precisa fazer aquisições adicionais antes de começar a fazer muita coisa.
+
+Esse "bastante coisa" são bibliotecas prontas: The Python Standard Library. Tem biblioteca pra muita coisa: funções matemáticas,
+estatísticas, manipulação de arquivos, redes, comunicação HTTP, JSON, arquivos ZIP, arquivos CSV, codificação de texto,
+criptografia, HTML, interface gráfica... A lista vai embora.
+
+Para usar os módulos pré-instalados, basta usar import e o nome do módulo - não é necessário mover nada para nenhuma pasta.
+O Python saberá aonde encontrá-los! No exemplo abaixo, vamos gerar um número aleatório entre 0 e 100 utilizando a função
+randrange, do módulo random. Execute o código várias vezes e veja o que acontece!
+
+import random
+
+sorteio = random.randrange(0, 100)
+print(sorteio)
+
+    Como são vários módulos prontos, é difícil lembrar tudo que temos em mãos. Por isso, a documentação oficial recomenda
+    manter o manual de referência dos módulos "debaixo do travesseiro": https://docs.python.org/3/library/index.html
+
+3. Instalando módulos
+
+O Python possui um grande repositório de módulos desenvolvidos pela comunidade. São módulos que não vem pré-instalados,
+mas que alguém fez e disponibilizou. Alguns desses módulos são extremamente populares e amplamente utilizados, sendo
+quase um consenso em suas respectivas áreas, como o matplotlib (geração de gráficos) e o pandas (manipulação de tabelas).
+Sempre que precisar instalar um novo módulo, basta abrir o console do seu sistema operacional (Prompt de Comando no Windows)
+e digitar: pip install nome-do-modulo
+
+Por exemplo, para instalar a matplotlib, usamos: pip install matplotlib
+
+    Dica: Você pode navegar pelo repositório onde o pip encontra os módulos: https://pypi.org/
+
+Arquivos
+
+Uma característica que nenhum de nossos programas teve agora é a persistência de dados. Sempre que nossos programas eram
+executados, eles precisavam que os usuários digitassem todos os dados de entrada novamente, e após exibir os dados de
+saída na tela, o programa era fechado e esses dados eram perdidos para sempre.
+
+A persistência se dá através de arquivos: estruturas abstratas para armazenar dados em uma memória permanente, como o
+disco rígido, um drive USB ou um servidor web.
+
+1. Arquivos em Python
+
+O Python possui algumas funções prontas para manipular arquivos binários puros (onde, conhecendo a estrutura interna de
+qualquer formato, podemos salvar qualquer tipo de arquivo) e para manipular arquivos de texto (onde os binários são
+decodificados como strings).
+
+Focaremos no básico de manipulação de arquivo de texto, pois, na prática, quando formos trabalhar com arquivos mais complexos,
+é provável que usaremos bibliotecas específicas para lidar com eles, e elas já terão funções próprias para ler e salvar
+esses arquivos da maneira correta.
+
+1.1. Abrindo e fechando arquivos
+
+Podemos criar arquivos novos ou abrir arquivos já existentes utilizando a função open. Ela possui 2 argumentos: uma com
+o caminho do arquivo e outra com o modo de operação.
+Modo 	Símbolo 	Descrição
+read 	r 	lê um arquivo existente
+write 	w 	cria um novo arquivo
+append 	a 	abre um arquivo existente para adicionar informações ao seu final
+update 	+ 	ao ser combinado com outros modos, permite alteração de arquivo já existente (ex: r+ abre um arquivo existente
+            e permite modificá-lo)
+
+Após abrirmos (ou criarmos) um arquivo, podemos realizar diversas operações. Ao final de todas elas, devemos fechar o
+nosso arquivo usando a função close. Essa etapa é importante por 2 motivos:
+
+        Se alteramos o arquivo mas não o fechamos, as alterações não serão salvas.
+        Se esquecermos de fechar um arquivo, outros programas podem ter problemas de acesso a ele.
+
+A função open retorna alguns dados que devem ser salvos em uma variável que será responsável por guardar alguns dados de
+acesso ao arquivo, para uso interno do Python.
+
+1.2. Escrevendo arquivos
+
+Para entender melhor o open e o close, façamos um programinha que escreve algo em um arquivo. Além das duas funções que
+já vimos, também utilizaremos a função write, que escreve um texto em um arquivo. É quase como um print mais simples,
+mas ele aceita apenas uma string.
+
+arquivo = open('ola.txt', 'w') # cria um arquivo ola.txt
+arquivo.write('Olá mundo!') # escreve "Olá mundo" no arquivo
+arquivo.close() # fecha e salva o arquivo
+
+Após executar o programa acima, abra a pasta onde seu programa está salvo. Note que apareceu um ola.txt lá. Abra-o e
+verifique seu conteúdo.
+
+1.3. Lendo arquivos
+
+Para ler um arquivo existente, não basta usar o open para abri-lo. É necessário carregar seu conteúdo para uma string,
+de modo que possamos trabalhar com o texto da mesma forma que sempre trabalhamos. A função read faz o oposto da write:
+ela retorna o texto existente no arquivo.
+
+Copie e rode o programa abaixo na mesma pasta do programa anterior.
+
+arquivo = open('ola.txt', 'r')
+conteudo = arquivo.read()
+print(conteudo)
+arquivo.close()
+
+Note que recuperamos com sucesso na variável conteudo o texto que estava salvo no arquivo!
+Arquivos CSV
+
+Muitos dados interessantes ou importantes estão disponíveis na forma de tabela. A capacidade de manipular planilhas foi
+determinante no sucesso dos computadores pessoais, dada sua importância para empresas e indivíduos.
+
+Aprenderemos a manipular dados utilizando um dos formatos de planilha mais amplamente utilizados na web: o formato CSV.
+Mas antes, como podemos representar tabelas em Python?
+
+1. Tabelas em Python
+
+Conforme explicado em capítulos anteriores, temos módulos prontos para realizar muitas tarefas para nós. Um dos módulos
+mais populares em Python é o pandas, que mesmo não vindo instalado por padrão é provavelmente o módulo mais usado para
+manipular planilhas. Porém, como este é um curso introdutório, convém entendermos um pouquinho de lógica de como manipular
+uma tabela para futuramente sermos capazes de trabalhar corretamente com os módulos prontos.
+
+Uma das formas mais simples de se representar uma tabela em Python seria através de uma lista de listas. Nossa lista
+principal seria a tabela como um todo, e cada lista interna seria uma linha da tabela.
+
+Para acessar um elemento individual, utilizamos 2 índices: o primeiro indica a lista interna (linha) e o segundo o
+elemento individual na lista (coluna). Para percorrer a tabela inteira, utilizamos 2 for aninhados: o mais externo
+fixa uma linha e o mais interno percorre cada elemento daquela linha.
+
+tabela = [['Aluno', 'Nota 1', 'Nota 2', 'Presenças'],
+          ['Luke', 7, 9, 15],
+          ['Han', 4, 7, 10],
+          ['Leia', 9, 9, 16]]
+
+print('Imprimindo cada elemento individual da tabela:')
+for linha in tabela:
+    for elemento in linha:
+        print(elemento)
+
+print('Imprimindo cada "linha" da tabela:')
+for linha in tabela:
+    print(linha)
+
+print('Imprimindo o elemento na linha 2, coluna 0:')
+print(tabela[2][0])
+
+2. O formato CSV
+
+A sigla CSV significa Comma-Separated Values, ou "valores separados por vírgula". Este formato é uma forma padrão de
+representar tabelas usando arquivos de texto simples: cada elemento é separado por uma vírgula, e cada linha é separada
+por uma quebra de linha.
+
+Na prática, nem sempre o padrão é seguido à risca: podemos utilizar outros símbolos para fazer a separação. Um bom motivo
+é o fato de a vírgula ser utilizada para representar casa decimal em algumas línguas, como a língua portuguesa. O importante
+é ser coerente: todos os elementos deverão ser separados pelo mesmo símbolo, e todas as linhas deverão ter o mesmo número
+de elementos.
+
+Cole o texto abaixo em um editor de texto puro (como o Bloco de Notas, no Windows) e salve-o com a extensão .csv.
+
+Aluno;Nota 1;Nota 2;Presenças
+Luke;7;9;15
+Han;4;7;10
+Leia;9;9;16
+
+Caso você tenha um editor de planilha instalado, como o Excel, é provável que o ícone representando o arquivo seja o ícone
+do editor de planilhas, e não de um arquivo de texto. Abra-o com seu editor de planilha e observe como ele interpreta
+corretamente os dados!
+
+Devido ao fato de ser um formato aberto (ou seja, não é necessário pagar por propriedade intelectual para usar) e ser muito
+fácil de manipular, diversos programas diferentes possuem a opção de importar ou exportar dados em CSV, e diversas bases de
+dados na web fornecem a opção de baixar os dados neste formato.

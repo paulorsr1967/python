@@ -1,0 +1,114 @@
+Estruturas de repetição
+
+Imagine que você queira fazer um programa que exibe os números de 1 até 5, em ordem crescente. Uma possibilidade seria:
+
+print(1)
+print(2)
+print(3)
+print(4)
+print(5)
+
+Porém, imagine que os requisitos do programa acabem sendo alterados, e agora o seu programa deverá ir até 1000. Ou, pior, imagine que o usuário irá digitar um valor e seu programa deverá contar apenas até o valor digitado. Note como fica difícil resolver esses problemas apenas copiando e colando linhas de código.
+
+Vamos pensar em outro tipo de problema. Na aula passada, fizemos um exercício onde precisávamos validar algumas entradas do usuário. Uma dessas entradas era a idade, e gostaríamos de aceitar apenas valores entre 0 e 150. Sua solução provavelmente foi parecida com o código abaixo:
+
+idade = int(input('Digite a idade: '))
+
+if idade < 0 or idade > 150:
+    print('Erro')
+
+Mas imagine que, ao invés de apenas mostrar uma mensagem de erro, nós devêssemos obrigar o usuário a continuar digitando valores novos para idade até que ele digite um valor válido (entre 0 e 150). Isso não seria possível utilizando apenas if, elif e else.
+1 while
+
+Os problemas enunciados acima podem ser resolvidos utilizando estruturas do tipo "enquanto". Em Python, a instrução while é bastante parecida com o if: ela possui uma expressão lógica, e seu conteúdo só será executado se a expressão for verdadeira. Porém, após chegar ao final, ela retorna ao início e testa novamente a condição. Se ela for verdadeira, seu conteúdo será executado de novo. Ao final da nova execução, a condição é testada novamente, e assim sucessivamente. A execução só será interrompida quando o teste se tornar falso. Vejamos como resolver o problema da idade utilizando o while:
+
+idade = int(input('Digite a idade: '))
+
+while idade < 0 or idade > 150:
+    print('Erro! Idade deve estar entre 0 e 150!')
+    idade = int(input('Digite a idade: '))
+
+print('Obrigado!')
+
+Faça alguns testes com o programa acima. Note que se você digitar uma idade válida desde o início, ele nunca chega a mostrar erro: o while é como um if e será ignorado se sua condição for falsa. Porém, caso você digite valores inválidos, a condição será verdadeira e ele irá executar enquanto você estiver digitando valores falsos.
+
+Estruturas do tipo "enquanto" são conhecidas como malhas de repetição ou loops.
+1.1. Condição de parada
+
+No exemplo anterior, o que determina se o loop prossegue ou não é o valor de idade. Esse valor, por sua vez, pode mudar em cada execução do loop, já que temos um input lá dentro. Experimente rodar o programa sem aquele input e verifique o que ocorre.
+
+idade = int(input('Digite a idade: '))
+
+while idade < 0 or idade > 150:
+    print('Erro! Idade deve estar entre 0 e 150!')    
+print('Obrigado!')
+
+O que ocorreu é o que chamamos de loop infinito: se a condição foi verdadeira uma vez, ela será para sempre, já que nunca mais alteramos o valor da variável envolvida no teste lógico. É importante criar caminhos para que a condição possa se tornar falsa em algum momento. Isso é o que chamamos de condição de parada do nosso loop.
+1.2. Sequências numéricas
+
+Iniciamos essa aula enunciando um problema onde gostaríamos de exibir números sequencialmente na tela. Isso é possível de resolver utilizando loops. Primeiro, observe o exemplo abaixo e responda: qual valor aparecerá na tela?
+
+x = 5
+x = x + 1
+print(x)
+
+Essa construção parece pouco intuitiva porque na matemática o operador = é bidirecional: a expressão "a = b" significa que a é igual a b e b é igual a a. Ao vermos x aparecendo em ambos os lados, parece que podemos simplesmente cortar dos dois lados, resultando em 0 = 1, o que é uma inverdade. Em Python o operador = na verdade não é o operador de igualdade da matemática, e sim o operador de atribuição de valores. Ou seja, o que ele diz é "pegue o resultado da expressão à direita e guarde na variável à esquerda". Portanto, no exemplo acima ele primeiro pega o valor antigo de x, que era 5, adiciona 1, resultando em 6, e guarda este novo resultado na variável x, substituindo o valor antigo. Logo, a resposta na tela é 6.
+
+Se colocarmos uma expressão desse tipo dentro de um loop, podemos gerar sequências numéricas:
+
+final = int(input('Digite o valor final da sequência: '))
+numero = 1
+
+while numero <= final:
+    print(numero)
+    numero = numero + 1
+
+O programa acima pede para o usuário digitar um número, que será o valor final da sequência. Então ele irá imprimir a variável numero, que vale 1, e somar +1 nela. Em seguida imprimirá de novo a variável, agora valendo 2, e somará +1 nela. E assim sucessivamente até que ela ultrapasse o valor final, quando o loop deixará de ser executado.
+
+Você consegue modificar o programa acima para fazer uma sequência decrescente? E para gerar a tabuada de um número dado pelo usuário? Você precisará mexer na expressão lógica do loop e no incremento de numero.
+
+    Em expressões onde uma variável aparece de ambos os lados, podemos utilizar uma abreviação. Por exemplo, a expressão x = x + 5 Pode ser reescrita como: x += 5 O mesmo vale para todas as outras expressões aritméticas (subtração, multiplicação, divisão etc).
+
+2 for
+
+No tópico anterior, vimos casos onde precisamos contar quantas vezes o loop se repete, e parar quando a contagem atingir um certo valor. Em outras ocasiões, apenas precisamos de algum tipo de sequência numérica. Nestes casos, era normal utilizar uma variável como contador, incrementá-la em cada passo e utilizar seu valor como condição de parada. O exemplo abaixo imprime todos os números pares entre 0 e 100:
+
+contador = 0
+while contador < 100:
+    print(contador)
+    contador = contador + 2
+
+Existe um meio de automatizar todas as operações envolvidas: atribuir um valor inicial, atribuir um valor final e realizar o incremento.
+2.1 Loops do tipo "para"
+
+Dizemos que o exemplo acima é um loop do tipo "para": para contador de 0 até 100 com passo 2 faça: imprima contador. Em Python, podemos criar esse tipo de loop utilizando os comandos for e range. O exemplo abaixo imprime os números de 0 até 9 na tela:
+
+for contador in range(10):
+    print(contador)
+
+A palavra "contador" é apenas uma variável. Ela não precisa ser criada previamente: qualquer nome utilizado nesta construção será automaticamente inicializado pelo for. O programa acima atribui o valor inicial 0 à variável. Em seguida, ele executa tudo que vier dentro do loop, e ao chegar ao final, ele retorna ao início, soma 1 na variável e testa se o seu valor atingiu o número entre parênteses. Caso não tenha atingido, ele repete a execução. Dizemos que aquele número é o valor final exclusivo (pois o loop exclui esse valor).
+
+De forma geral, tudo que vier dentro de um for contador in range(x) irá executar "x" vezes. É o jeito fácil de dizer "repita essas linhas x vezes" em Python.
+2.2 Parâmetros do range
+
+Foi dito que loops do tipo "para" seguem a forma "para contador de X até Y passo Z faça:". No exemplo acima, os valores inicial (0) e passo (1) foram atribuídos de forma automática. Caso eles sejam omitidos, 0 e 1 são os valores padrão, respectivamente. Porém, podemos determiná-los, se necessário. O exemplo abaixo inicia a impressão dos números em 1 ao invés de 0:
+
+for contador in range(1, 10):
+    print(contador)
+
+Dizemos que esse loop possui valor inicial 1, valor final (exclusivo) 10 e passo 1. Assim como manipulamos o valor inicial e o final, podemos manipular também o passo. Veja o exemplo abaixo:
+
+for contador in range(0, 100, 2):
+    print(contador)
+
+Note que o resultado dele na tela é exatamente o mesmo do exemplo com while do início deste capítulo! Valor inicial 0, valor final (exclusivo) 100 e passo 2. Porém, não precisamos nos preocupar em criar o contador, atribuir valor inicial, incrementar e criar uma condição de parada. Apenas colocamos os números dentro do range e ele fez a mágica por nós.
+
+Quantos exercícios de while você fez que podem ser resolvidos de maneira mais fácil com o for?
+
+    Dica: é possível utilizar o for para gerar sequências numéricas decrescentes também. Basta adotar valor final menor do que o inicial e incremento negativo.
+
+    for contador in range(20, 0, -1):
+        print(contador)
+
+    Qual valor será excluído da sequência: o 20 ou o 0? Tente deduzir e execute o programa para ver se acertou!
+
